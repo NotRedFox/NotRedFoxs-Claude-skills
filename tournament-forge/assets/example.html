@@ -1,0 +1,371 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Tournament Forge Example Run</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a fight card read top to bottom. Numbered stages (they are a real sequence), the bracket as the centrepiece, the comparison as the closer. */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#15181e; --muted:#5b6370; --line:#dde1e7; --faint:#c3c9d2;
+  --accent:#1f4fd1; --accent-soft:#e3eafc; --accent-ink:#1a3fa8;
+  --other:#a3aab4;
+  --win:#1d7a46; --win-soft:#e1f3e8; --fail:#b42318; --fail-soft:#fbe7e5; --tail:#8a5a00; --tail-soft:#fbf0d9;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1217; --surface:#171b22; --ink:#e8ebf0; --muted:#9aa3b0; --line:#2a303a; --faint:#3b424e;
+  --accent:#7ea2ff; --accent-soft:#1c2744; --accent-ink:#a9c1ff; --other:#566070;
+  --win:#5fd08f; --win-soft:#14301f; --fail:#ff8a7e; --fail-soft:#3a1715; --tail:#f2c46b; --tail-soft:#352a12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1217; --surface:#171b22; --ink:#e8ebf0; --muted:#9aa3b0; --line:#2a303a; --faint:#3b424e;
+  --accent:#7ea2ff; --accent-soft:#1c2744; --accent-ink:#a9c1ff; --other:#566070;
+  --win:#5fd08f; --win-soft:#14301f; --fail:#ff8a7e; --fail-soft:#3a1715; --tail:#f2c46b; --tail-soft:#352a12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+h1,h2{font-family:var(--display);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1;text-wrap:balance;margin:0}
+h1{font-size:clamp(46px,8vw,78px)}
+h2{font-size:clamp(28px,4.4vw,38px)}
+h3{font-size:15px;margin:0;font-weight:600}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:13px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.pill.win{background:var(--win-soft);color:var(--win);border-color:transparent}
+.pill.fail{background:var(--fail-soft);color:var(--fail);border-color:transparent}
+.pill.tail{background:var(--tail-soft);color:var(--tail);border-color:transparent}
+.pill.acc{background:var(--accent-soft);color:var(--accent-ink);border-color:transparent}
+section{display:flex;flex-direction:column;gap:18px}
+.sechead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
+.sechead .num{font-family:var(--display);font-weight:800;font-size:38px;color:var(--accent);line-height:1}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+
+/* header */
+header{display:flex;flex-direction:column;gap:16px}
+.notice{border:1px dashed var(--muted);border-radius:8px;padding:9px 14px;font-size:13.5px;color:var(--muted);max-width:760px}
+.prompt q{font-size:18px;font-weight:500;quotes:"\201C" "\201D"}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-weight:800;font-size:38px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stage b{font-family:var(--display);font-size:20px;text-transform:uppercase;letter-spacing:.02em;line-height:1.05}
+.stage .mono{color:var(--muted);font-size:11.5px}
+.stage.t{border-color:var(--accent);background:var(--accent-soft)}
+.stage.t .mono{color:var(--accent-ink)}
+
+/* brief */
+ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.rub{display:grid;grid-template-columns:1fr 44px;gap:6px 10px;align-items:center}
+.rub .bar{grid-column:1/-1;height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:-2px}
+.rub .bar i{display:block;height:100%;background:var(--accent)}
+.rub .w{font-family:var(--mono);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* approaches */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:7px;min-width:0}
+.card.out{border-color:var(--fail);background:var(--fail-soft)}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{font-family:var(--display);font-weight:800;font-size:26px;line-height:1;color:var(--accent)}
+.card.out .tag{color:var(--fail)}
+.prob{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.prob .track{flex:1;height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.prob .track i{display:block;height:100%;background:var(--muted)}
+.card p.mech{font-size:13.5px;color:var(--muted)}
+.card .gate{font-size:12.5px;color:var(--fail);font-weight:500}
+
+/* tests */
+.tlist{display:flex;flex-direction:column;gap:8px;font-size:14px}
+.tlist .t{display:grid;grid-template-columns:32px 1fr auto;gap:8px;align-items:baseline}
+.tlist .id{font-family:var(--mono);font-weight:600}
+.hard{font-family:var(--mono);font-size:10.5px;padding:1px 6px;border-radius:4px;background:var(--ink);color:var(--bg)}
+.mx{overflow-x:auto}
+.mx table{border-collapse:collapse;width:100%;min-width:300px;font-family:var(--mono);font-size:13px}
+.mx th{font-weight:500;color:var(--muted);padding:4px 6px;text-align:center}
+.mx td{padding:4px 6px;text-align:center;font-variant-numeric:tabular-nums}
+.mx td:first-child,.mx th:first-child{text-align:left;font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent)}
+.dot{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:middle}
+.dot.p{background:var(--win)}.dot.f{background:var(--fail)}
+.mx tr.out td{opacity:.4}
+.mx tr.fin td{border-top:2px solid var(--accent)}
+.mx tr.fin td:first-child{font-size:16px}
+
+/* bracket */
+.bscroll{overflow-x:auto;padding:12px 10px}
+#bracket{display:block;width:100%;min-width:760px;height:auto}
+#bracket .bx{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+#bracket g.m{cursor:pointer}
+#bracket g.m:hover .bx,#bracket g.m:focus .bx,#bracket g.m.sel .bx{stroke:var(--accent);stroke-width:2.5}
+#bracket g.m:focus{outline:none}
+#bracket .wrow{fill:var(--win-soft)}
+#bracket .wrow.c{fill:var(--accent-soft)}
+#bracket .sep{stroke:var(--line)}
+#bracket .L{font-family:var(--display);font-weight:800;font-size:19px;fill:var(--muted)}
+#bracket .L.w{fill:var(--win)}
+#bracket .L.c{fill:var(--accent)}
+#bracket .nm{font-family:var(--body);font-size:13px;fill:var(--muted)}
+#bracket .nm.w{fill:var(--ink);font-weight:600}
+#bracket .sc{font-family:var(--mono);font-size:12px;fill:var(--muted)}
+#bracket .sc.w{fill:var(--ink);font-weight:600}
+#bracket .ln{fill:none;stroke:var(--faint);stroke-width:2}
+#bracket .ln.c{stroke:var(--accent);stroke-width:3}
+#bracket .rl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;fill:var(--muted)}
+#bracket .champ{fill:var(--surface);stroke:var(--win);stroke-width:2.5}
+#bracket .cL{font-family:var(--display);font-weight:800;font-size:52px;fill:var(--win)}
+#bracket .cT{font-family:var(--body);font-size:13.5px;font-weight:600;fill:var(--ink)}
+#bracket .cS{font-family:var(--mono);font-size:11.5px;fill:var(--muted)}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 22px}
+.detail h3{grid-column:1/-1;font-family:var(--display);font-size:24px;text-transform:uppercase;font-weight:800;letter-spacing:.02em}
+.kv{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:14px}
+.attack{border-left:3px solid var(--fail);padding:3px 0 3px 10px;font-size:13.5px}
+.attack.soft{border-left-color:var(--line);color:var(--muted)}
+.graft{border-left:3px solid var(--win);padding:3px 0 3px 10px;font-size:13.5px}
+
+/* forged */
+.forged{background:var(--surface);border:2px solid var(--ink);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.layers{display:flex;flex-direction:column;gap:8px}
+.layer{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.layer .i{font-family:var(--display);font-weight:800;font-size:22px;color:var(--accent);line-height:1.1}
+.layer p{font-size:14px}
+@media (max-width:560px){.layer{grid-template-columns:24px 1fr}.layer .pill{grid-column:2;justify-self:start}}
+
+/* comparison */
+.chart{display:flex;flex-direction:column;gap:9px}
+.crow{display:grid;grid-template-columns:minmax(120px,170px) 1fr 64px;gap:10px;align-items:center}
+.crow .lbl{font-size:13.5px}
+.crow .lbl small{display:block;color:var(--muted);font-size:12px;line-height:1.2}
+.crow .tr i{display:block;height:16px;min-width:3px;border-radius:3px;background:var(--other)}
+.crow.me .tr i{background:var(--accent)}
+.crow.me .lbl{color:var(--accent-ink);font-weight:600}
+.crow .v{font-family:var(--mono);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.crow.me .v{color:var(--accent-ink);font-weight:600}
+@media (max-width:520px){.crow{grid-template-columns:1fr 60px}.crow .lbl{grid-column:1/-1}}
+.headline{background:var(--accent);border-color:var(--accent);color:#fff;justify-content:center}
+.headline b{font-family:var(--display);font-weight:800;font-size:60px;line-height:.95}
+.headline p{font-size:14px;opacity:.95}
+.tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table.cmp{border-collapse:collapse;width:100%;min-width:680px;font-size:13.5px}
+table.cmp th,table.cmp td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--line);vertical-align:middle}
+table.cmp th:first-child,table.cmp td:first-child{text-align:left}
+table.cmp thead th{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+table.cmp thead th.me{background:var(--accent);color:#fff;font-weight:600}
+table.cmp td.me{background:var(--accent-soft)}
+table.cmp tbody tr:last-child td{border-bottom:0}
+.y{color:var(--win);font-weight:700}.n{color:var(--faint);font-weight:700}.pt{color:var(--tail);font-weight:700}.q{color:var(--muted)}
+table.cmp td.me .y{color:var(--accent-ink)}
+footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:16px}
+footer a{color:var(--accent-ink)}
+@media (prefers-reduced-motion:no-preference){#bracket .bx{transition:stroke .15s}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Claude skill · tournament-forge · standard tier</span>
+  <h1>Tournament Forge</h1>
+  <p class="notice">Illustrative example. This is not a recorded run. It shows what each stage produces for a realistic sample problem, so you can see the flow without spending tokens. A real recorded run is in the repo under <span class="mono">examples/rate-limiter-run</span>.</p>
+  <div class="panel prompt">
+    <span class="eyebrow">The prompt</span>
+    <q>Add rate limiting to our public REST API. About 50k users, a two person team, Node and Postgres. It must never lock out paying customers.</q>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>8</b><span>approaches entered</span></div>
+    <div class="stat"><b>22</b><span>subagent calls</span></div>
+    <div class="stat"><b>~1.3M</b><span>tokens (at measured 57k per call)</span></div>
+    <div class="stat"><b>5/5</b><span>tests pass on the final answer</span></div>
+  </div>
+  <div class="strip" aria-label="Pipeline stages and call counts">
+    <div class="stage"><span class="mono">Stage 0</span><b>Sharpen</b><span class="mono">orchestrator · 0 calls</span></div>
+    <div class="stage t"><span class="mono">Stage 0b</span><b>Write tests</b><span class="mono">1 call · code only</span></div>
+    <div class="stage"><span class="mono">Stage 1</span><b>Enumerate</b><span class="mono">orchestrator · 0 calls</span></div>
+    <div class="stage"><span class="mono">Stage 2</span><b>Blind builds</b><span class="mono">8 calls · mid</span></div>
+    <div class="stage"><span class="mono">Stage 3</span><b>Run + gate</b><span class="mono">1 call · cheap</span></div>
+    <div class="stage"><span class="mono">Stage 4</span><b>Bracket</b><span class="mono">11 calls · cheap to strong</span></div>
+    <div class="stage"><span class="mono">Stage 5</span><b>Forge</b><span class="mono">orchestrator + 1 red-team</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="sechead"><span class="num">0</span><h2>Sharpen the input</h2><span class="muted">The rubric and tests are locked here, before any answer exists.</span></div>
+  <div class="two">
+    <div class="panel">
+      <h3>Brief</h3>
+      <ul class="clean">
+        <li><b>Must:</b> paid plans are never hard-blocked by normal use.</li>
+        <li><b>Must:</b> no extra write per request on Postgres (already at 70% CPU).</li>
+        <li><b>Must:</b> a two person team can run it.</li>
+        <li><b>Out of scope:</b> billing changes, DDoS protection.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Rubric (weights sum to 100)</h3>
+      <div class="rub">
+        <span>Protects paying customers</span><span class="w">30</span><span class="bar"><i style="width:100%"></i></span>
+        <span>Correct under abuse and outages</span><span class="w">25</span><span class="bar"><i style="width:83%"></i></span>
+        <span>Simple to run for 2 people</span><span class="w">20</span><span class="bar"><i style="width:67%"></i></span>
+        <span>Infra and token cost</span><span class="w">15</span><span class="bar"><i style="width:50%"></i></span>
+        <span>Clear to API users</span><span class="w">10</span><span class="bar"><i style="width:33%"></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><span class="num">1–2</span><h2>Eight real approaches</h2><span class="muted">Each differs in mechanism. Built blind to each other.</span></div>
+  <p class="hint">Probability is how likely a typical expert would suggest it. At least a third must be long shots (under 20%), so the field isn't eight versions of the obvious answer.</p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section>
+  <div class="sechead"><span class="num">3</span><h2>Tests decide first</h2><span class="muted">Written from the brief by an agent that never sees any code.</span></div>
+  <div class="two">
+    <div class="panel">
+      <h3>Spec tests</h3>
+      <div class="tlist" id="tlist"></div>
+    </div>
+    <div class="panel">
+      <h3>Results after blind builds</h3>
+      <div class="mx"><table id="matrix"></table></div>
+      <p class="hint"><b style="color:var(--ink)">T3 failed by 5 of 8.</b> A test most builds fail gets reviewed against the brief. Verdict: valid, kept. B and C fail a HARD test and are out.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><span class="num">4</span><h2>The bracket</h2><span class="muted">Contenders only ever see “A” and “B”. Select a match to read it.</span></div>
+  <div class="panel bscroll"><svg id="bracket" viewBox="0 0 980 470" role="img" aria-label="Tournament bracket. E, Soft quotas, wins."></svg></div>
+  <div class="detail" id="detail" aria-live="polite"></div>
+</section>
+
+<section>
+  <div class="sechead"><span class="num">5</span><h2>The forged answer</h2><span class="muted">Champion plus the grafts that survived critique.</span></div>
+  <div class="forged">
+    <p><b>Plan-tiered quotas, enforced by a Redis token bucket per API key, with soft limits for paid plans.</b> Paid keys get warning headers at 80% and a 24 hour grace period before any 429. Free keys are hard-limited.</p>
+    <div class="layers">
+      <div class="layer"><span class="i">1</span><p>Cache the three hot read endpoints first. This removes about 60% of load before any limiting runs.</p><span class="pill win">graft from G</span></div>
+      <div class="layer"><span class="i">2</span><p>Redis token bucket per API key, sized by plan.</p><span class="pill win">graft from A</span></div>
+      <div class="layer"><span class="i">3</span><p>Costly endpoints spend 5 tokens instead of 1.</p><span class="pill win">graft from H</span></div>
+      <div class="layer"><span class="i">4</span><p>Soft limits for paid plans: <span class="mono">X-RateLimit-Remaining</span> header, an email at 80%, grace before 429.</p><span class="pill acc">champion E</span></div>
+      <div class="layer"><span class="i">5</span><p>Emergency load shedding for the free tier only, when p95 latency passes 800 ms.</p><span class="pill win">graft from F</span></div>
+    </div>
+    <div class="two">
+      <div class="panel" style="border-color:var(--fail)">
+        <h3>Test T3 + final red-team</h3>
+        <p class="attack">If Redis goes down, every request fails the limit check and paying customers get 429s.</p>
+        <p class="graft">Fixed: fail open for paid keys, fail closed for free keys, alert on Redis errors.</p>
+      </div>
+      <div class="panel" style="border-color:var(--win)">
+        <h3>Ships with its tests</h3>
+        <p>5 spec tests pass, plus 3 regression tests added from upheld attacks and the deciding distinguishing input.</p>
+        <p><span class="pill win">8 / 8 passing</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><span class="num">vs</span><h2>How it compares</h2></div>
+  <div class="two">
+    <div class="panel">
+      <h3>Estimated tokens per run</h3>
+      <div class="chart" id="tokchart"></div>
+    </div>
+    <div class="panel headline">
+      <b>~26× fewer</b>
+      <p>tokens than a full arena-skill run, and about 4× fewer than its quick mode, for a standard Tournament Forge run.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Subagent calls per run</h3>
+    <div class="chart" id="callchart"></div>
+  </div>
+  <div class="tbl-scroll">
+    <table class="cmp">
+      <thead><tr><th>Feature</th><th class="me">Tournament Forge</th><th>arena-skill</th><th>llm-council</th><th>agent-review-panel</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <p class="hint">✓ yes · ✗ no · ~ partly · ? not stated in the project's README (it may still do it)</p>
+</section>
+
+<footer>
+  <p><b>How tokens are estimated.</b> Measured: in a real Quick run, 9 subagent calls used 521k tokens, about 57k per call, mostly fixed overhead. The same 57k per call is applied to every tool, so the comparison comes down to call counts. arena-skill call counts come from its README. Your numbers will vary by environment; the ratio holds.</p>
+  <p>Inspired by <a href="https://github.com/Jakeschincariol/arena-skill">arena-skill</a>, <a href="https://github.com/karpathy/llm-council">llm-council</a> and <a href="https://github.com/wan-huiyan/agent-review-panel">agent-review-panel</a>. Test mode follows CodeT and S*. Full research list in the README.</p>
+</footer>
+</div>
+
+<script>
+const AP={
+ A:{n:"Token bucket",full:"Redis token bucket per key",p:45,mech:"Classic per-key bucket in Redis, refilled every second."},
+ B:{n:"API gateway",full:"Managed gateway limits",p:30,mech:"Push limiting to the CDN or API gateway, by IP and key.",out:"Out: fails HARD test T2. Office NAT blocks paying customers."},
+ C:{n:"Postgres counter",full:"Postgres fixed window",p:20,mech:"Counter row per key per minute in the main database.",out:"Out: fails HARD test T4. Adds a write per request."},
+ D:{n:"Sliding log",full:"Sliding window log",p:15,mech:"Store every request timestamp in Redis for exact windows."},
+ E:{n:"Soft quotas",full:"Plan-tiered soft quotas",p:12,mech:"Quotas by plan, warnings before blocks, grace for paid keys."},
+ F:{n:"Load shedding",full:"Adaptive load shedding",p:8,mech:"No fixed limits. Shed traffic only when latency climbs."},
+ G:{n:"Fix hot paths",full:"Do less: fix hot paths",p:6,mech:"Reframe: cache the 3 costly endpoints, limit only those."},
+ H:{n:"Cost units",full:"Cost units per query",p:5,mech:"Charge points per request by cost, like a GraphQL budget."}};
+document.getElementById("cards").innerHTML=Object.entries(AP).map(([k,a])=>
+ `<div class="card ${a.out?"out":""}"><div class="top"><span class="tag">${k}</span>${a.out?'<span class="pill fail">out at gate</span>':a.p<20?'<span class="pill tail">long shot</span>':'<span class="pill">common</span>'}</div>
+ <h3>${a.full}</h3><p class="mech">${a.mech}</p>
+ <div class="prob"><span class="track"><i style="width:${a.p*2}%"></i></span>${a.p}%</div>${a.out?`<p class="gate">${a.out}</p>`:""}</div>`).join("");
+
+const T=[["T1","Free key flood gets 429",0],["T2","Paid key behind a shared office IP never gets 429",1],["T3","Redis down: paid keys still served",0],["T4","No extra DB write per request",1],["T5","Headers show remaining quota",0]];
+document.getElementById("tlist").innerHTML=T.map(([i,t,h])=>`<div class="t"><span class="id">${i}</span><span>${t}</span>${h?'<span class="hard">HARD</span>':"<span></span>"}</div>`).join("");
+const R={A:"11011",B:"10110",C:"11101",D:"11011",E:"11011",F:"01110",G:"01110",H:"11011"};
+let mx='<tr><th></th>'+T.map(t=>`<th>${t[0]}</th>`).join("")+'<th>pass</th></tr>';
+for(const[k,r]of Object.entries(R)){mx+=`<tr class="${AP[k].out?"out":""}"><td>${k}</td>`+[...r].map(c=>`<td><span class="dot ${c==="1"?"p":"f"}" aria-label="${c==="1"?"pass":"fail"}"></span></td>`).join("")+`<td>${[...r].filter(c=>c==="1").length}/5</td></tr>`;}
+mx+='<tr class="fin"><td>Final</td>'+"11111".split("").map(()=>'<td><span class="dot p" aria-label="pass"></span></td>').join("")+'<td>5/5</td></tr>';
+document.getElementById("matrix").innerHTML=mx;
+
+const M={
+ q1:{x:10,y:62,a:"E",w:"E",bye:1},
+ q2:{x:10,y:178,a:"D",b:"G",w:"D",sa:"4/5",sb:"3/5",r:"Quarterfinal",lens:"Cost Economist",model:"cheap",margin:"Clear",swap:"Not needed",
+   atk:[["G","Fails T1: a free-key flood hits an uncached write endpoint and nothing stops it."],["D","Stores every timestamp, so memory grows with traffic.",1]],gr:"From G: cache the three hot endpoints before limiting anything."},
+ q3:{x:10,y:298,a:"A",w:"A",bye:1},
+ q4:{x:10,y:414,a:"H",b:"F",w:"H",sa:"4/5",sb:"3/5",r:"Quarterfinal",lens:"Reality Checker",model:"cheap",margin:"Clear",swap:"Not needed",
+   atk:[["F","Fails T1: no limit applies until latency is already bad, so one scraper degrades everyone first."],["H","API users can't predict their cost before calling.",1]],gr:"From F: load shedding as an emergency backstop, free tier only."},
+ s1:{x:270,y:120,a:"E",b:"D",w:"E",sa:"86",sb:"61",r:"Semifinal",lens:"Pessimistic Auditor",model:"mid",margin:"Clear",swap:"Not needed",
+   atk:[["D","Distinguishing input, actually run: 50k keys bursting at once. D uses 40× the Redis memory of E."],["E","Soft limits let an abusive paid key run for 24 hours.",1]],gr:"None. D's only unique idea (exact windows) was the part that broke."},
+ s2:{x:270,y:356,a:"A",b:"H",w:"A",sa:"74",sb:"73",r:"Semifinal",lens:"Simplicity / UX Architect",model:"mid",margin:"Narrow",swap:"Swapped verdict disagreed, so it was a tie. A advanced on the top-weighted item.",
+   atk:[["H","A two person team has to maintain a cost table for every endpoint."],["A","Treats a cheap GET and a costly export the same.",1]],gr:"From H: costly endpoints spend 5 tokens instead of 1."},
+ f:{x:530,y:238,a:"E",b:"A",w:"E",sa:"88",sb:"76",r:"Final",lens:"All four lenses",model:"strong",margin:"Clear",swap:"Always run in the final. E won both orders.",
+   atk:[["A","One hard limit for all plans: a paid customer's month-end batch job gets 429s."],["E","Grace periods need an email path. Rebuttal: the billing email service already exists.",1]],gr:"From A: the Redis token bucket becomes E's enforcement engine."}};
+const W=200,H=30,svg=document.getElementById("bracket");let s="";
+[["QUARTERFINALS",10],["SEMIFINALS",270],["FINAL",530],["CHAMPION",790]].forEach(([t,x])=>s+=`<text class="rl" x="${x}" y="18">${t}</text>`);
+const link=(f,t,c)=>{const a=M[f],b=M[t];return `<path class="ln ${c?"c":""}" d="M${a.x+W},${a.y} H${a.x+W+30} V${b.y} H${b.x}"/>`;};
+s+=link("q2","s1")+link("q4","s2")+link("q3","s2")+link("s2","f")+link("q1","s1",1)+link("s1","f",1)+`<path class="ln c" d="M${530+W},238 H790"/>`;
+const row=(m,t,sc,top)=>{const y=top?m.y-H:m.y,w=m.w===t,c=w&&t==="E";
+ return `${w?`<rect class="wrow ${c?"c":""}" x="${m.x+1}" y="${y+1}" width="${W-2}" height="${H-1}" rx="${top?6:0}"/>`:""}<text class="L ${w?(c?"c":"w"):""}" x="${m.x+12}" y="${y+21}">${t}</text><text class="nm ${w?"w":""}" x="${m.x+36}" y="${y+20}">${AP[t].n}</text>${sc?`<text class="sc ${w?"w":""}" x="${m.x+W-10}" y="${y+20}" text-anchor="end">${sc}</text>`:""}`;};
+for(const[id,m]of Object.entries(M)){
+ const sep=`<line class="sep" x1="${m.x}" x2="${m.x+W}" y1="${m.y}" y2="${m.y}"/>`;
+ if(m.bye){s+=`<g><rect class="bx" x="${m.x}" y="${m.y-H}" width="${W}" height="${H*2}" rx="7"/>${row(m,m.a,"",1)}${sep}<text class="sc" x="${m.x+36}" y="${m.y+20}">bye (top seed)</text></g>`;continue;}
+ s+=`<g class="m" data-id="${id}" tabindex="0" role="button" aria-label="${m.r}: ${AP[m.a].n} versus ${AP[m.b].n}"><rect class="bx" x="${m.x}" y="${m.y-H}" width="${W}" height="${H*2}" rx="7"/>${row(m,m.a,m.sa,1)}${sep}${row(m,m.b,m.sb,0)}</g>`;}
+s+=`<rect class="champ" x="790" y="178" width="180" height="120" rx="10"/><text class="cL" x="808" y="236">E</text><text class="cT" x="808" y="260">Soft quotas</text><text class="cS" x="808" y="281">+ 4 grafts · 8/8 tests</text>`;
+svg.innerHTML=s;
+
+const detail=document.getElementById("detail");
+function show(id){const m=M[id];
+ svg.querySelectorAll("g.m").forEach(g=>g.classList.toggle("sel",g.dataset.id===id));
+ detail.innerHTML=`<h3>${m.r}: ${m.a} vs ${m.b}</h3>
+ <div class="kv"><span class="eyebrow">Setup</span><p>Critic lens: <b>${m.lens}</b></p><p>Judge tier: <b>${m.model}</b></p>
+  <p>Score: ${m.a} ${m.sa} / ${m.b} ${m.sb} <span class="pill ${m.margin==="Clear"?"win":"tail"}">${m.margin}</span></p><p class="muted">Order swap: ${m.swap}</p></div>
+ <div class="kv"><span class="eyebrow">Attacks (must name a concrete failure)</span>${m.atk.map(([t,x,soft])=>`<p class="attack ${soft?"soft":""}"><b>On ${t}:</b> ${x}${soft?' <span class="muted">(not decisive)</span>':""}</p>`).join("")}</div>
+ <div class="kv"><span class="eyebrow">Winner and graft</span><p><span class="pill win">${m.w} advances</span></p><p class="graft">${m.gr}</p></div>`;}
+svg.addEventListener("click",e=>{const g=e.target.closest("g.m");if(g)show(g.dataset.id);});
+svg.addEventListener("keydown",e=>{const g=e.target.closest("g.m");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();show(g.dataset.id);}});
+show("f");
+
+const bars=(rows,max,fmt)=>rows.map(([a,b,v,me])=>`<div class="crow ${me?"me":""}"><span class="lbl">${a}<small>${b}</small></span><span class="tr"><i style="width:${Math.max(v/max*100,.4)}%"></i></span><span class="v">${fmt(v)}</span></div>`).join("");
+document.getElementById("tokchart").innerHTML=bars([["Single prompt","no tournament",0.003],["Tournament Forge","Quick (measured)",0.52,1],["Tournament Forge","Standard",1.3,1],["Tournament Forge","Deep",2.6,1],["arena-skill","--quick",5.2],["arena-skill","full run",34]],34,v=>v<0.01?"~3k":v+"M");
+document.getElementById("callchart").innerHTML=bars([["Single prompt","no tournament",1],["Tournament Forge","Quick (measured)",9,1],["Tournament Forge","Standard",22,1],["Tournament Forge","Deep",45,1],["arena-skill","--quick",91],["arena-skill","full run",595]],595,v=>v);
+
+const Y='<span class="y">✓</span>',N='<span class="n">✗</span>',P='<span class="pt">~</span>',Q='<span class="q">?</span>';
+const F=[["Bracket elimination",Y,Y,N,N],["Diversity by mechanism, not persona",Y,P,N,N],["Spec-first tests decide matches",Y,N,N,P],["Anonymous A/B judging",Y,Q,Y,P],["Rubric locked before answers",Y,P,N,Q],["Re-judge with order swapped",Y,Q,N,N],["Early exit when all agree",Y,N,N,P],["Keeps losers' best ideas",Y,N,P,N]];
+document.getElementById("tbody").innerHTML=F.map(r=>`<tr><td>${r[0]}</td><td class="me">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("");
+</script>
+</body></html>
