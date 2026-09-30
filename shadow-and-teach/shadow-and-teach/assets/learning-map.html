@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repo Learning Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a working notebook for one codebase. Map rail on the left, one area open on the right. */
+:root{
+  --bg:#f2f3f1; --paper:#ffffff; --sunk:#e8eae6; --rule:#cfd3cc;
+  --ink:#1b1f1c; --ink-2:#4b524d; --ink-3:#7b827c;
+  --accent:#2a5d84; --accent-wash:#e1eaf1;
+  --marker:#f3d54e; --marker-ink:#352b00;
+  --ok:#2d7a4f; --ok-wash:#dff0e5; --warn:#9a5b0c; --warn-wash:#f7ead5; --bad:#a8322a; --bad-wash:#f6e0dd;
+  --code-bg:#161a17; --code-ink:#e3e6e1; --code-dim:#6f776f; --code-hl:rgba(243,213,78,.18);
+  --sans:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#121513; --paper:#1a1e1b; --sunk:#222723; --rule:#343a35;
+  --ink:#e7eae5; --ink-2:#aeb5ad; --ink-3:#7f877f;
+  --accent:#8dbbe0; --accent-wash:#1d2c38;
+  --marker:#e3c53f; --marker-ink:#231c00;
+  --ok:#6fd198; --ok-wash:#15301f; --warn:#e8ab5c; --warn-wash:#35260f; --bad:#f08a80; --bad-wash:#3a1916;
+  --code-bg:#0c0e0c; --code-ink:#e3e6e1; --code-dim:#636b63; --code-hl:rgba(227,197,63,.15);
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#121513; --paper:#1a1e1b; --sunk:#222723; --rule:#343a35;
+  --ink:#e7eae5; --ink-2:#aeb5ad; --ink-3:#7f877f;
+  --accent:#8dbbe0; --accent-wash:#1d2c38;
+  --marker:#e3c53f; --marker-ink:#231c00;
+  --ok:#6fd198; --ok-wash:#15301f; --warn:#e8ab5c; --warn-wash:#35260f; --bad:#f08a80; --bad-wash:#3a1916;
+  --code-bg:#0c0e0c; --code-ink:#e3e6e1; --code-dim:#636b63; --code-hl:rgba(227,197,63,.15);
+  color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans)}
+.wrap{max-width:1260px;margin:0 auto;padding-inline:16px;padding-block:24px 56px}
+h1,h2,h3{margin:0;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(26px,3.6vw,34px);font-weight:700;letter-spacing:-.015em}
+h2{font-size:23px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:16px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.88em}
+:not(pre)>code{background:var(--sunk);padding:1px 4px;border-radius:2px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lbl{font:500 12px/1.3 var(--mono);color:var(--ink-3)}
+
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 32px;align-items:end;margin-bottom:22px;border-bottom:1px solid var(--rule);padding-bottom:18px}
+@media (max-width:760px){.top{grid-template-columns:minmax(0,1fr)}}
+.top .intro{color:var(--ink-2);max-width:70ch;margin-top:8px}
+.controls{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+@media (max-width:760px){.controls{align-items:flex-start}}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.seg button{border:0;background:var(--paper);padding:5px 12px;font-size:13px;color:var(--ink-2)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.prog{font:12px var(--mono);color:var(--ink-2);display:flex;gap:8px;align-items:center;font-variant-numeric:tabular-nums}
+.bar{width:140px;height:5px;background:var(--sunk)}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+
+.grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:940px){.grid{grid-template-columns:minmax(0,1fr)}}
+.rail{display:flex;flex-direction:column;gap:14px}
+.box{background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:14px 16px;min-width:0}
+.boxhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+
+.crumbs{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font:12.5px var(--mono);margin-bottom:6px}
+.crumbs button{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.crumbs span{color:var(--ink-3)}
+.crumbs b{font-weight:600;color:var(--ink)}
+#map svg{width:100%;height:auto;display:block;overflow:visible}
+.node{cursor:pointer}
+.node rect{fill:var(--paper);stroke:var(--ink-3);stroke-width:1.2}
+.node text{fill:var(--ink);font:600 12px var(--sans)}
+.node rect.stack{fill:var(--sunk)}
+.node:hover rect{stroke:var(--accent)}
+.node.sel rect{fill:var(--accent-wash);stroke:var(--accent);stroke-width:2}
+.node.hot rect{fill:var(--marker);stroke:var(--marker)}
+.node.hot text{fill:var(--marker-ink)}
+.node .pip{fill:var(--sunk);stroke:var(--ink-3);stroke-width:.6}
+.node .pip.on{fill:var(--ok);stroke:var(--ok)}
+.edge line{stroke:var(--ink-3);stroke-width:1.1}
+.ah{fill:var(--ink-3)}
+.edge rect{fill:var(--bg)}
+.edge text{fill:var(--ink-2);font:10px var(--mono)}
+.edge.hot line{stroke:var(--accent);stroke-width:2}
+.edge.hot text{fill:var(--accent)}
+.edge.dim{opacity:.18}
+.edge.hov{opacity:1}
+.edge.hov line{stroke:var(--accent);stroke-width:2}
+.edge.hov text{fill:var(--accent)}
+.maptip b.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);vertical-align:middle;margin:0 2px}
+.maptip{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+
+.hop{background:var(--sunk);border-radius:3px;padding:10px 12px;font-size:14px}
+.hop .where{font:500 12px var(--mono);color:var(--accent);margin-bottom:3px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--rule);background:var(--paper);border-radius:3px;padding:6px 12px;font-size:13px;font-weight:500}
+.btn:hover{border-color:var(--ink-2)}
+.btn.go{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn:disabled{opacity:.4;cursor:default}
+.linkish{border:0;background:none;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:2px;font-size:13px}
+select{font:13px var(--sans);padding:4px 6px;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);max-width:100%}
+
+.path{list-style:none;margin:0;padding:0}
+.path li+li{border-top:1px solid var(--sunk)}
+.path button{width:100%;border:0;background:none;text-align:left;padding:7px 4px;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:6px;align-items:baseline}
+.path button:hover{background:var(--sunk)}
+.path button[aria-current="true"] .t{font-weight:700}
+.path button[aria-current="true"]{box-shadow:inset 3px 0 0 var(--accent)}
+.path .n,.path .s{font:12px var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.path .s.full{color:var(--ok)}
+
+.where-am-i{font:12px var(--mono);color:var(--ink-3)}
+.one{font-size:17px;color:var(--ink-2);margin-top:4px}
+.files{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;font:12px var(--mono);color:var(--ink-2)}
+.files .unread{color:var(--ink-3)}
+.checklist{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font:12.5px var(--mono);color:var(--ink-3)}
+.checklist .on{color:var(--ok)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin:16px -16px 16px;padding:0 10px;overflow-x:auto}
+.tabs button{border:0;background:none;padding:9px 12px;font-weight:500;color:var(--ink-2);border-bottom:2px solid transparent;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.analogy{font-style:italic;color:var(--ink-2);max-width:68ch}
+.prose{max-width:70ch}
+.term{border:0;background:none;padding:0;font:inherit;color:inherit;border-bottom:1.5px dotted var(--accent)}
+.def{display:block;margin:6px 0;padding:8px 12px;background:var(--accent-wash);border-radius:3px;font-size:14px}
+.inside{border-top:1px solid var(--rule);padding-top:12px}
+.inside ul{margin:6px 0 10px;padding-left:18px}
+.cmd{display:flex;gap:8px;align-items:center;background:var(--code-bg);color:var(--code-ink);border-radius:3px;padding:8px 10px;font:13px var(--mono);overflow-x:auto}
+.cmd span{flex:1;white-space:pre}
+.cmd button{border:1px solid var(--code-dim);background:none;color:var(--code-ink);border-radius:2px;font:11px var(--mono);padding:2px 8px}
+
+.walkpick{display:flex;gap:6px;flex-wrap:wrap}
+.walkpick button{border:1px solid var(--rule);background:var(--paper);border-radius:3px;padding:4px 10px;font-size:13px}
+.walkpick button[aria-pressed="true"]{border-color:var(--ink);font-weight:600}
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:4px;overflow-x:auto;font:12.8px/1.65 var(--mono);padding:10px 0}
+.code .ln{display:grid;grid-template-columns:42px max-content;padding-right:18px;transition:background .15s,opacity .15s}
+.code .no{color:var(--code-dim);text-align:right;padding-right:14px;user-select:none}
+.code .tx{white-space:pre}
+.code.focus .ln{opacity:.36}
+.code.focus .ln.hl{opacity:1;background:var(--code-hl)}
+.code .k{color:#f2a38f}.code .s{color:#b5dd9a}.code .c{color:var(--code-dim);font-style:italic}
+.steps{display:flex;flex-wrap:wrap;gap:4px}
+.steps button{border:1px solid var(--rule);background:var(--paper);border-radius:3px;padding:3px 8px;font-size:12.5px;color:var(--ink-2)}
+.steps button[aria-current="true"]{background:var(--marker);border-color:var(--marker);color:var(--marker-ink)}
+.note{border-left:3px solid var(--marker);padding:4px 0 4px 12px}
+.note .lbl{margin-bottom:2px}
+.small{font-size:13px;color:var(--ink-3)}
+
+.card{border:1px solid var(--rule);border-radius:4px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.card .ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{text-align:left;border:1px solid var(--rule);background:var(--paper);border-radius:3px;padding:8px 12px}
+.opt:hover{border-color:var(--ink-2)}
+.opt.right{border-color:var(--ok);background:var(--ok-wash)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-wash)}
+.fb{padding:8px 12px;border-radius:3px;font-size:14px}
+.fb.ok{background:var(--ok-wash)}
+.fb.no{background:var(--warn-wash)}
+.hint{background:var(--sunk);padding:8px 12px;border-radius:3px;font-size:14px}
+.pz2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+@media (max-width:620px){.pz2{grid-template-columns:minmax(0,1fr)}}
+.pz{background:var(--sunk);border-radius:3px;padding:8px;min-height:90px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.pl{text-align:left;font:12.5px/1.4 var(--mono);white-space:pre;overflow-x:auto;background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:6px 8px}
+.pl:hover{border-color:var(--ink-2)}
+textarea{width:100%;min-height:84px;font:14px/1.5 var(--sans);padding:8px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);resize:vertical}
+.model{background:var(--accent-wash);padding:10px 12px;border-radius:3px;font-size:14px}
+ol.task{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+
+.warm{background:var(--marker);color:var(--marker-ink);border-radius:4px;padding:12px 16px;margin-bottom:16px;display:flex;flex-direction:column;gap:8px}
+.warm .opt{color:var(--ink)}
+details.box summary{cursor:pointer;font-weight:600}
+.log{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+.log li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;font-size:13.5px}
+.risk{font:500 11.5px var(--mono);padding-top:2px}
+.risk.look{color:var(--ok)}.risk.change{color:var(--warn)}.risk.ask{color:var(--bad)}
+.log .why{color:var(--ink-3)}
+.research{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 20px;margin-top:12px}
+.research div{font-size:13.5px;color:var(--ink-2)}
+.research b{display:block;color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="lbl" id="label"></div>
+      <h1 id="title"></h1>
+      <p class="intro" id="intro"></p>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="How much detail">
+        <button id="d-simple" data-depth="simple" aria-pressed="true">Simple</button>
+        <button id="d-normal" data-depth="normal" aria-pressed="false">Normal</button>
+        <button id="d-deep" data-depth="deep" aria-pressed="false">Deep</button>
+      </div>
+      <div class="prog"><div class="bar"><i id="progbar"></i></div><span id="progtxt"></span></div>
+    </div>
+  </header>
+
+  <div id="warm" class="warm" hidden></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <section class="box" aria-label="Map">
+        <div class="crumbs" id="crumbs"></div>
+        <div id="map"></div>
+        <p class="maptip">Click a box to open that area. A box with a second box behind it has its own map inside. The six dots under each name are your progress on that area (read, walked through, predicted, ordered, explained, tried). A dot turns green <b class="dot"></b> when you finish that step.</p>
+      </section>
+      <section class="box" aria-label="Follow a request">
+        <div class="boxhead"><span class="lbl">follow a request</span><select id="scenario" aria-label="Which request"></select></div>
+        <div id="hop" class="hop"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="hprev">Back</button>
+          <button class="btn go" id="hnext">Next</button>
+          <span class="lbl" id="hcount"></span>
+        </div>
+      </section>
+      <section class="box" aria-label="Suggested order">
+        <div class="boxhead"><span class="lbl">suggested order</span></div>
+        <ol class="path" id="path"></ol>
+      </section>
+    </aside>
+    <main class="box" id="area" aria-live="polite"></main>
+  </div>
+
+  <details class="box" style="margin-top:22px">
+    <summary>What the agent did to build this page</summary>
+    <ul class="log" id="log"></ul>
+  </details>
+  <details class="box" style="margin-top:12px">
+    <summary>Why the page is built this way</summary>
+    <div class="research" id="research"></div>
+  </details>
+</div>
+
+<script>
+/* REPO-DATA-START: the agent replaces everything between these markers */
+const REPO = {name:"example",label:"example",title:"Example",intro:"",checks:["Read"],glossary:{},areas:[],edges:[],path:[],traces:[],log:[]};
+/* REPO-DATA-END */
+
+const RESEARCH = [
+  ["Guess first", "Predicting, then running, then changing code beat normal lessons across 13 schools.", "Sentance, Waite and Kallia 2019", "https://doi.org/10.1080/08993408.2019.1608781"],
+  ["Hints, not answers", "Open-ended GPT-4 help raised practice scores 48% and cut exam scores 17%. A hint-only tutor didn't do that damage.", "Bastani et al. 2025", "https://www.pnas.org/doi/10.1073/pnas.2422633122"],
+  ["Explanations with the code", "Junior developers who asked the AI to explain kept their skills. The ones who handed over the work scored under 40%.", "Shen and Tamkin 2026", "https://www.anthropic.com/research/AI-assistance-coding-skills"],
+  ["Named steps", "Labelling each chunk of a worked example by its purpose helped people solve new problems.", "Margulieux, Guzdial and Catrambone 2012", "https://doi.org/10.1145/2361276.2361291"],
+  ["Examples before exercises", "Studying worked examples beat solving from scratch (g = 0.48 over 55 maths studies).", "Barbieri et al. 2023", "https://doi.org/10.1007/s10648-023-09745-1"],
+  ["Reordering lines", "Parsons puzzles took up to half the time of writing the code, with similar learning.", "Ericson, Margulieux and Rick 2017", "https://doi.org/10.1145/3141880.3141895"],
+  ["Explaining it yourself", "Being prompted to explain: g = 0.55 over 64 reports.", "Bisra et al. 2018", "https://doi.org/10.1007/s10648-018-9434-x"],
+  ["Coming back to it", "Being tested beats rereading once a few days have passed.", "Roediger and Karpicke 2006", "https://doi.org/10.1111/j.1467-9280.2006.01693.x"],
+  ["Doing, not watching", "How people use a visualization matters more than what it shows.", "Hundhausen, Douglas and Stasko 2002", "https://faculty.cc.gatech.edu/~stasko/papers/jvlc02.pdf"],
+  ["A real first task", "New developers settle in through small concrete tasks and quick feedback.", "Dagenais et al. 2010", "https://dl.acm.org/doi/10.1145/1806799.1806842"],
+  ["Maps of connections", "Concept maps help people remember and apply what they learned (55 studies).", "Nesbit and Adesope 2006", "https://journals.sagepub.com/doi/10.3102/00346543076003413"],
+  ["Zoom levels", "Show a system at a few fixed levels of detail and let people move between them.", "C4 model", "https://c4model.com/"]
+];
+
+/* ---------- state ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const KEY = "learnmap:" + REPO.name;
+let S = { depth:"simple", scope:[], area:null, tab:"overview", walk:0, step:0, trace:0, hop:0, done:{}, quizOk:{}, last:0 };
+try { Object.assign(S, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch(e) {}
+const prevVisit = S.last; S.last = Date.now();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+
+/* ---------- area index across levels ---------- */
+const INDEX = {};
+(function walk(list, chain){ (list||[]).forEach(a => {
+  if(!a.walks && a.code) a.walks = [{title:"The key code", code:a.code, codeNote:a.codeNote, steps:a.steps}];
+  a.walks = a.walks || [];
+  INDEX[a.id] = { a, chain };
+  if(a.children) walk(a.children.areas, chain.concat(a.id));
+}); })(REPO.areas, []);
+const A = id => INDEX[id] && INDEX[id].a;
+const ALL = Object.values(INDEX).map(x => x.a);
+function level(){
+  const top = S.scope.length ? A(S.scope[S.scope.length-1]) : null;
+  const src = top ? top.children : REPO;
+  return { areas: src.areas||[], edges: src.edges||[], path: (src.path && src.path.length ? src.path : (src.areas||[]).map(a=>a.id)), traces: src.traces||[], top };
+}
+if(S.scope.some(id => !A(id) || !A(id).children)) S.scope = [];
+if(!A(S.area)) S.area = level().path[0] || (REPO.areas[0]||{}).id;
+
+const isDone = (id,c) => !!(S.done[id] && S.done[id][c]);
+function mark(id,c){ S.done[id] = S.done[id] || {}; if(!S.done[id][c]){ S.done[id][c] = Date.now(); save(); renderMap(); renderPath(); renderProgress(); renderChecks(); } }
+
+/* ---------- glossary ---------- */
+function terms(html){
+  return String(html||"").replace(/\[\[([^\]]+)\]\]/g, (m,t) => {
+    const k = Object.keys(REPO.glossary).find(g => g.toLowerCase() === t.toLowerCase()) || t;
+    return `<button class="term" data-term="${esc(k)}">${esc(t)}</button>`;
+  });
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest(".term"); if(!b) return;
+  const n = b.nextElementSibling;
+  if(n && n.classList.contains("def")){ n.remove(); return; }
+  const d = document.createElement("span"); d.className = "def";
+  d.innerHTML = `<b>${esc(b.dataset.term)}</b>: ${esc(REPO.glossary[b.dataset.term] || "")}`;
+  b.after(d);
+});
+
+/* ---------- layout ---------- */
+const W = 420, NW = 132, NH = 48;
+function layout(lv){
+  const ids = lv.areas.map(a => a.id);
+  const manual = ids.length && lv.areas.every(a => typeof a.x === "number" && typeof a.y === "number");
+  if(manual){ const pos = Object.fromEntries(lv.areas.map(a => [a.id,{x:a.x,y:a.y}])); return { pos, H: Math.max(...lv.areas.map(a=>a.y)) + 40 }; }
+  const E = lv.edges.filter(e => ids.includes(e.from) && ids.includes(e.to) && e.from !== e.to);
+  const out = Object.fromEntries(ids.map(i => [i, []])); E.forEach(e => out[e.from].push(e.to));
+  const order = lv.path.filter(i => ids.includes(i)).concat(ids.filter(i => !lv.path.includes(i)));
+  const state = {}, keep = [];
+  const dfs = u => { state[u] = 1; out[u].forEach(v => { if(state[v] === 1) return; keep.push([u,v]); if(!state[v]) dfs(v); }); state[u] = 2; };
+  order.forEach(u => { if(!state[u]) dfs(u); });
+  const rank = Object.fromEntries(ids.map(i => [i,0]));
+  for(let k=0;k<ids.length;k++) keep.forEach(([u,v]) => { if(rank[v] < rank[u]+1) rank[v] = rank[u]+1; });
+  const COLS = 3, SLOT = [W*0.17, W*0.5, W*0.83];
+  let rows = [];
+  const maxR = Math.max(0, ...Object.values(rank));
+  for(let r=0;r<=maxR;r++){ const inR = order.filter(i => rank[i] === r); for(let k=0;k<inR.length;k+=COLS) rows.push(inR.slice(k,k+COLS)); }
+  rows = rows.filter(r => r.length);
+  const pos = {}, nbr = id => E.filter(e => e.from===id || e.to===id).map(e => e.from===id ? e.to : e.from);
+  rows.forEach((row, ri) => {
+    const y = 34 + ri*96;
+    const bary = id => { const xs = nbr(id).filter(n => pos[n]).map(n => pos[n].x); return xs.length ? xs.reduce((a,b)=>a+b,0)/xs.length : W/2; };
+    row.sort((a,b) => bary(a) - bary(b));
+    let slots = row.length === 3 ? [0,1,2] : row.length === 2 ? [0,2] : [1];
+    if(row.length === 1){
+      const want = bary(row[0]); slots = [[0,1,2].sort((a,b)=>Math.abs(SLOT[a]-want)-Math.abs(SLOT[b]-want))[0]];
+      const prev = rows[ri-1];
+      if(prev && prev.length === 1 && Math.abs(pos[prev[0]].x - SLOT[slots[0]]) < 1) slots = [slots[0] === 1 ? 0 : 1];
+    }
+    row.forEach((id,k) => { pos[id] = { x: SLOT[slots[k]], y }; });
+  });
+  return { pos, H: Math.max(120, 34 + (rows.length-1)*96 + NH/2 + 12) };
+}
+function clipTo(x1,y1,x2,y2){ const dx=x2-x1, dy=y2-y1; const t = Math.min((NW/2+3)/Math.abs(dx||1e-9),(NH/2+3)/Math.abs(dy||1e-9)); return [x2-dx*t, y2-dy*t]; }
+function splitTitle(t){ if(t.length <= 18) return [t]; const mid = t.length/2; let best = -1;
+  for(let i=0;i<t.length;i++) if(t[i]===" " && (best<0 || Math.abs(i-mid)<Math.abs(best-mid))) best = i;
+  return best<0 ? [t] : [t.slice(0,best), t.slice(best+1)]; }
+
+let hotState = {};
+function renderMap(){
+  const lv = level(), L = layout(lv), P = L.pos, hot = hotState;
+  const focus = S.area;
+  let s = `<svg viewBox="0 0 ${W} ${L.H}" role="img" aria-label="How the areas connect"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0L10,5L0,10z"/></marker></defs>`;
+  let labels = ""; const placed = [];
+  lv.edges.forEach(e => { const a = P[e.from], b = P[e.to]; if(!a||!b) return;
+    const [sx,sy] = clipTo(b.x,b.y,a.x,a.y), [tx,ty] = clipTo(a.x,a.y,b.x,b.y);
+    const touches = focus && (e.from===focus || e.to===focus) && P[focus];
+    const isHot = hot.edge && ((hot.edge[0]===e.from && hot.edge[1]===e.to) || (hot.edge[0]===e.to && hot.edge[1]===e.from));
+    const dim = !isHot && P[focus] && !touches && lv.edges.length > 6;
+    const w = String(e.label).length*6.1 + 8; let mx = (sx+tx)/2, my = (sy+ty)/2;
+    s += `<g class="edge${isHot||touches?" hot":""}${dim?" dim":""}" data-a="${e.from}" data-b="${e.to}"><line x1="${sx}" y1="${sy}" x2="${tx}" y2="${ty}" marker-end="url(#ah)"/></g>`;
+    if(!dim){
+      const hits = (x,y) => Object.values(P).some(q => Math.abs(q.x-x) < NW/2 + w/2 && Math.abs(q.y-y) < NH/2 + 7) || placed.some(r => Math.abs(r.x-x) < (r.w+w)/2 + 3 && Math.abs(r.y-y) < 16);
+      const len = Math.hypot(tx-sx, ty-sy) || 1, px = -(ty-sy)/len, py = (tx-sx)/len; let found = false;
+      for(const off of [0, 14, -14, 26, -26]){ for(const t of [0.5,0.4,0.6,0.3,0.7,0.2,0.8]){ const x = sx+(tx-sx)*t+px*off, y = sy+(ty-sy)*t+py*off; if(!hits(x,y)){ mx = x; my = y; found = true; break; } } if(found) break; }
+      placed.push({x:mx, y:my, w});
+      labels += `<g class="edge${isHot||touches?" hot":""}" data-a="${e.from}" data-b="${e.to}"><rect x="${mx-w/2}" y="${my-7.5}" width="${w}" height="14" rx="2"/><text x="${mx}" y="${my+3.5}" text-anchor="middle">${esc(e.label)}</text></g>`;
+    }
+  });
+  lv.areas.forEach(a => { const p = P[a.id]; const cls = ["node"]; if(a.id===S.area) cls.push("sel"); if(hot.node===a.id) cls.push("hot");
+    const lines = splitTitle(a.title), y0 = p.y - (lines.length===2 ? 9 : 3);
+    let pips = ""; const nC = REPO.checks.length; REPO.checks.forEach((c,i) => { pips += `<circle class="pip${isDone(a.id,c)?" on":""}" cx="${p.x-(nC-1)*4.5+i*9}" cy="${p.y+15}" r="2.6"/>`; });
+    s += `<g class="${cls.join(" ")}" data-area="${a.id}" tabindex="0" role="button" aria-label="${esc(a.title)}"><title>${esc(a.title)}: ${REPO.checks.filter(c=>isDone(a.id,c)).length} of ${REPO.checks.length} checks done</title>${a.children?`<rect class="stack" x="${p.x-NW/2+4}" y="${p.y-NH/2+4}" width="${NW}" height="${NH}" rx="3"/>`:""}<rect x="${p.x-NW/2}" y="${p.y-NH/2}" width="${NW}" height="${NH}" rx="3"/>${lines.map((t,i)=>`<text x="${p.x}" y="${y0+i*13}" text-anchor="middle">${esc(t)}</text>`).join("")}${pips}</g>`;
+  });
+  $("#map").innerHTML = s + labels + "</svg>";
+  $("#map").querySelectorAll(".node").forEach(g => {
+    g.onclick = () => pick(g.dataset.area);
+    g.onkeydown = e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(g.dataset.area); } };
+    g.onmouseenter = () => $("#map").querySelectorAll(".edge").forEach(x => x.classList.toggle("hov", x.dataset.a === g.dataset.area || x.dataset.b === g.dataset.area));
+    g.onmouseleave = () => $("#map").querySelectorAll(".edge.hov").forEach(x => x.classList.remove("hov"));
+  });
+  const crumbs = [`<button data-lv="0">${esc(REPO.name)}</button>`];
+  S.scope.forEach((id,i) => crumbs.push(i===S.scope.length-1 ? `<b>${esc(A(id).title)}</b>` : `<button data-lv="${i+1}">${esc(A(id).title)}</button>`));
+  if(!S.scope.length) crumbs[0] = `<b>${esc(REPO.name)}</b> <span>(whole repo)</span>`;
+  $("#crumbs").innerHTML = crumbs.join(" <span>/</span> ");
+  $("#crumbs").querySelectorAll("[data-lv]").forEach(b => b.onclick = () => { S.scope = S.scope.slice(0, +b.dataset.lv); S.trace = 0; S.hop = 0; save(); renderAll(); });
+}
+function pick(id){ S.area = id; S.tab = "overview"; S.walk = 0; S.step = 0; save(); hotState = {}; renderAll(); if(window.innerWidth < 940) $("#area").scrollIntoView({behavior:"smooth"}); }
+function enter(id){ S.scope = INDEX[id].chain.concat(id); S.trace = 0; S.hop = 0; const c = A(id).children; S.area = (c.path && c.path[0]) || c.areas[0].id; S.tab = "overview"; S.walk = 0; S.step = 0; save(); renderAll(); }
+function open(id){ const x = INDEX[id]; if(!x) return; S.scope = x.chain.slice(); pick(id); }
+
+function renderPath(){
+  const lv = level();
+  $("#path").innerHTML = lv.path.map((id,i) => { const a = A(id); if(!a) return "";
+    const n = REPO.checks.filter(c => isDone(id,c)).length, full = n === REPO.checks.length;
+    return `<li><button data-area="${id}" aria-current="${id===S.area}"><span class="n">${i+1}.</span><span class="t">${esc(a.title)}${a.children?` <span class="lbl">(inside)</span>`:""}</span><span class="s${full?" full":""}">${full?"done":n+"/"+REPO.checks.length}</span></button></li>`; }).join("");
+  $("#path").querySelectorAll("button").forEach(b => b.onclick = () => pick(b.dataset.area));
+}
+function renderProgress(){
+  const total = ALL.length * REPO.checks.length;
+  const n = ALL.reduce((t,a) => t + REPO.checks.filter(c => isDone(a.id,c)).length, 0);
+  $("#progbar").style.width = (total ? 100*n/total : 0) + "%";
+  $("#progtxt").textContent = `${n} of ${total} checks, ${ALL.length} areas`;
+}
+document.querySelectorAll(".seg button").forEach(b => b.onclick = () => { S.depth = b.dataset.depth; save(); renderDepth(); renderArea(); });
+function renderDepth(){ document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.depth === S.depth))); }
+
+/* ---------- code ---------- */
+const KW = /\b(def|class|return|if|elif|else|for|while|in|not|is|and|or|None|True|False|import|from|as|with|try|except|finally|raise|yield|async|await|lambda|pass|function|const|let|var|new|this|null|undefined|true|false|export|default|switch|case|break|continue|throw|catch|typeof|func|package|struct|interface|type|fn|pub|impl|use|mut|match)\b/g;
+function hi(line){
+  const out = []; let rest = line, m;
+  const cm = line.match(/^(.*?)(\s#.*|^#.*|\s\/\/.*|^\/\/.*)$/);
+  let comment = "";
+  if(cm && !/["'][^"']*$/.test(cm[1])){ rest = cm[1]; comment = cm[2]; }
+  const parts = rest.split(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`[^`]*`)/);
+  parts.forEach((p,i) => { if(i%2) out.push(`<span class="s">${esc(p)}</span>`); else out.push(esc(p).replace(KW, '<span class="k">$1</span>')); });
+  if(comment) out.push(`<span class="c">${esc(comment)}</span>`);
+  return out.join("");
+}
+function codeBlock(w, range){
+  return `<div class="code${range?" focus":""}">` + String(w.code||"").split("\n").map((ln,i) => {
+    const on = range && i+1 >= range[0] && i+1 <= range[1];
+    return `<div class="ln${on?" hl":""}"><span class="no">${i+1}</span><span class="tx">${hi(ln)||" "}</span></div>`; }).join("") + `</div>`;
+}
+
+/* ---------- area panel ---------- */
+function renderChecks(){ const el = $("#checks"); if(!el) return;
+  el.innerHTML = REPO.checks.map(c => `<span class="${isDone(S.area,c)?"on":""}">[${isDone(S.area,c)?"x":" "}] ${esc(c.toLowerCase())}</span>`).join(""); }
+function renderArea(){
+  const a = A(S.area); if(!a){ $("#area").innerHTML = `<p>No areas in this map yet.</p>`; return; }
+  const chain = INDEX[a.id].chain.map(id => A(id).title);
+  const read = a.read || a.files || [];
+  const tabs = [["overview","Overview"],["walk","Walk the code"],["practice","Practice"],["try","Your turn"]];
+  $("#area").innerHTML = `
+    <div class="where-am-i">${esc([REPO.name].concat(chain).join(" / "))}</div>
+    <h2 style="margin-top:4px">${esc(a.title)}</h2>
+    <p class="one">${esc(a.one)}</p>
+    <div class="files">${(a.files||[]).map(f => `<span class="${read.includes(f)?"":"unread"}">${esc(f)}${read.includes(f)?"":" (listed, not read)"}</span>`).join("")}</div>
+    <div class="checklist" id="checks"></div>
+    <div class="tabs" role="tablist">${tabs.map(([k,l]) => `<button role="tab" id="tab-${k}" data-tab="${k}" aria-selected="${S.tab===k}">${l}</button>`).join("")}</div>
+    <div id="tabbody"></div>`;
+  $("#area").querySelectorAll(".tabs button").forEach(b => b.onclick = () => { S.tab = b.dataset.tab; save(); renderArea(); });
+  renderChecks();
+  ({overview:tabOverview, walk:tabWalk, practice:tabPractice, try:tabTry})[S.tab](a);
+}
+function tabOverview(a){
+  let inside = "";
+  if(a.children){
+    inside = `<div class="inside"><h3>Inside this area</h3><ul>${a.children.areas.map(c => `<li><b>${esc(c.title)}</b>: ${esc(c.one)}</li>`).join("")}</ul><button class="btn go" id="enter">Open the map inside ${esc(a.title)}</button></div>`;
+  } else if(a.deeper){
+    const ask = `go deeper on ${a.title}`;
+    inside = `<div class="inside"><h3>Going deeper</h3><p class="prose" style="margin:6px 0 10px">${terms(a.deeper)}</p><p class="small">This part hasn't been mapped in detail yet. Ask the agent and it will add it to this page:</p><div class="cmd" style="margin-top:6px"><span>${esc(ask)}</span><button data-copy="${esc(ask)}">Copy</button></div></div>`;
+  }
+  $("#tabbody").innerHTML = `<div class="stack"><p class="analogy">${esc(a.analogy)}</p><p class="prose">${terms(a.depth && a.depth[S.depth])}</p><p class="small">Switch Simple, Normal or Deep at the top to reread this with more or less detail. Underlined words open a definition.</p><div class="row"><button class="btn" id="toWalk">Walk the code</button></div>${inside}</div>`;
+  mark(a.id,"Read");
+  $("#toWalk").onclick = () => { S.tab = "walk"; save(); renderArea(); };
+  const en = $("#enter"); if(en) en.onclick = () => enter(a.id);
+  wireCopy();
+}
+function tabWalk(a){
+  if(!a.walks.length){ $("#tabbody").innerHTML = `<p>No walkthrough for this area yet.</p>`; return; }
+  const w = a.walks[Math.min(S.walk, a.walks.length-1)], st = w.steps[Math.min(S.step, w.steps.length-1)];
+  $("#tabbody").innerHTML = `<div class="stack">
+    ${a.walks.length > 1 ? `<div class="walkpick">${a.walks.map((x,i) => `<button data-w="${i}" aria-pressed="${i===S.walk}">${esc(x.title)}</button>`).join("")}</div>` : `<h3>${esc(w.title||"")}</h3>`}
+    <div class="steps">${w.steps.map((x,i) => `<button data-i="${i}" aria-current="${i===S.step}">${i+1}. ${esc(x.t)}</button>`).join("")}</div>
+    ${codeBlock(w, st.l)}
+    <div class="note"><div class="lbl">step ${S.step+1} of ${w.steps.length}</div><h3>${esc(st.t)}</h3><p>${terms(st.n)}</p></div>
+    <div class="row"><button class="btn" id="wprev" ${S.step===0?"disabled":""}>Back</button><button class="btn go" id="wnext">${S.step===w.steps.length-1 ? (S.walk < a.walks.length-1 ? "Next walkthrough" : "Done, practise it") : "Next step"}</button></div>
+    <p class="small">${esc(w.codeNote||"")}</p></div>`;
+  $("#tabbody").querySelectorAll(".walkpick button").forEach(b => b.onclick = () => { S.walk = +b.dataset.w; S.step = 0; save(); tabWalk(a); });
+  $("#tabbody").querySelectorAll(".steps button").forEach(b => b.onclick = () => { S.step = +b.dataset.i; save(); tabWalk(a); });
+  $("#wprev").onclick = () => { S.step--; save(); tabWalk(a); };
+  $("#wnext").onclick = () => {
+    if(S.step < w.steps.length-1){ S.step++; save(); tabWalk(a); return; }
+    if(S.walk < a.walks.length-1){ S.walk++; S.step = 0; save(); tabWalk(a); return; }
+    mark(a.id,"Walked"); S.tab = "practice"; S.walk = 0; S.step = 0; save(); renderArea();
+  };
+}
+function tabPractice(a){
+  const p = a.predict, pz = a.parsons, ex = a.explain, qz = a.quiz || [];
+  let h = `<div class="stack">`;
+  if(p) h += `<div class="card" id="pred"><div class="ch"><h3>Guess first</h3><span class="small">A wrong guess still helps</span></div><p>${p.q}</p><div class="opts">${p.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join("")}</div><div class="row"><button class="btn" id="hintbtn">Show a hint</button></div><div id="hints" class="stack" style="gap:6px"></div><div id="predfb"></div></div>`;
+  if(pz) h += `<div class="card"><div class="ch"><h3>Put the lines in order</h3><span class="small">Tap a line to move it</span></div><p>${esc(pz.prompt)}</p><div class="pz2"><div class="pz" id="bank"></div><div class="pz" id="ans"></div></div><div class="row"><button class="btn go" id="pcheck">Check</button><button class="btn" id="preset">Start over</button></div><div id="pfb"></div></div>`;
+  if(ex) h += `<div class="card"><div class="ch"><h3>Explain it yourself</h3><span class="small">Then compare</span></div><p>${ex.q}</p><textarea id="exp-${a.id}" placeholder="In your own words"></textarea><div class="row"><button class="btn go" id="cmp">Compare with the agent's answer</button></div><div id="model"></div></div>`;
+  if(qz.length) h += `<div class="card"><div class="ch"><h3>Quick check</h3></div>${qz.map((q,qi)=>`<p>${q.q}</p><div class="opts" data-q="${qi}">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div><div id="qfb${qi}"></div>`).join("")}</div>`;
+  $("#tabbody").innerHTML = h + `</div>`;
+  if(p){ let hn = 0, done = false;
+    $("#hintbtn").onclick = () => { if(hn < p.hints.length){ $("#hints").insertAdjacentHTML("beforeend", `<div class="hint">Hint ${hn+1}: ${terms(p.hints[hn])}</div>`); hn++; } if(hn >= p.hints.length){ $("#hintbtn").disabled = true; $("#hintbtn").textContent = "That's all the hints"; } };
+    $("#pred").querySelectorAll(".opt").forEach(b => b.onclick = () => { if(done) return; const i = +b.dataset.i;
+      if(i === p.a){ done = true; b.classList.add("right"); $("#predfb").innerHTML = `<div class="fb ok">Right. ${terms(p.why)}</div>`; mark(a.id,"Predicted"); }
+      else { b.classList.add("wrong"); b.disabled = true; $("#predfb").innerHTML = `<div class="fb no">Not that one. Have another look, or take a hint.</div>`; } }); }
+  if(pz){ const pieces = pz.lines.map((t,i)=>({t,i})).concat(pz.distractor ? [{t:pz.distractor,i:-1}] : []);
+    let bank = shuffle(pieces.slice()), ans = [];
+    const draw = () => {
+      $("#bank").innerHTML = `<span class="lbl">scrambled</span>` + bank.map((x,k)=>`<button class="pl" data-k="${k}">${esc(x.t)}</button>`).join("");
+      $("#ans").innerHTML = `<span class="lbl">your order</span>` + ans.map((x,k)=>`<button class="pl" data-k="${k}">${esc(x.t)}</button>`).join("");
+      $("#bank").querySelectorAll(".pl").forEach(b => b.onclick = () => { ans.push(bank.splice(+b.dataset.k,1)[0]); draw(); });
+      $("#ans").querySelectorAll(".pl").forEach(b => b.onclick = () => { bank.push(ans.splice(+b.dataset.k,1)[0]); draw(); }); };
+    draw();
+    $("#preset").onclick = () => { bank = shuffle(pieces.slice()); ans = []; $("#pfb").innerHTML = ""; draw(); };
+    $("#pcheck").onclick = () => { const extra = ans.some(x=>x.i===-1);
+      if(!extra && ans.length===pz.lines.length && ans.every((x,k)=>x.i===k)){ $("#pfb").innerHTML = `<div class="fb ok">That's the order. ${terms(pz.why)}</div>`; mark(a.id,"Ordered"); }
+      else if(extra) $("#pfb").innerHTML = `<div class="fb no">One of your lines doesn't belong here. Which one does a different job?</div>`;
+      else if(ans.length < pz.lines.length) $("#pfb").innerHTML = `<div class="fb no">Some lines are still in the scrambled pile.</div>`;
+      else { const k = ans.findIndex((x,j)=>x.i!==j); $("#pfb").innerHTML = `<div class="fb no">${k ? `The first ${k} ${k===1?"line is":"lines are"} right. ` : ""}Line ${k+1} is the first one out of place.</div>`; } }; }
+  if(ex){ const ta = $("#exp-"+a.id);
+    try { ta.value = localStorage.getItem(KEY+":exp:"+a.id) || ""; } catch(e) {}
+    ta.oninput = () => { try { localStorage.setItem(KEY+":exp:"+a.id, ta.value); } catch(e) {} };
+    $("#cmp").onclick = () => { if(ta.value.trim().length < 15){ $("#model").innerHTML = `<div class="fb no">Write a sentence first. Having a go before you look is what makes it stick.</div>`; return; }
+      $("#model").innerHTML = `<div class="model"><b>How the agent put it:</b> ${terms(ex.model)}<br><span class="small">Different words are fine. Did yours get at the same idea?</span></div>`; mark(a.id,"Explained"); }; }
+  $("#tabbody").querySelectorAll(".opts[data-q]").forEach(box => { const q = qz[+box.dataset.q];
+    box.querySelectorAll(".opt").forEach(b => b.onclick = () => { const o = q.opts[+b.dataset.i];
+      box.querySelectorAll(".opt").forEach(x => x.classList.remove("right","wrong")); b.classList.add(o[1]?"right":"wrong");
+      $("#qfb"+box.dataset.q).innerHTML = `<div class="fb ${o[1]?"ok":"no"}">${terms(o[2])}</div>`;
+      if(o[1]){ S.quizOk[a.id] = Date.now(); save(); } }); });
+}
+function tabTry(a){
+  const t = a.task; if(!t){ $("#tabbody").innerHTML = `<p>No task for this area yet.</p>`; return; }
+  $("#tabbody").innerHTML = `<div class="stack"><div class="card"><div class="ch"><h3>${esc(t.title)}</h3><span class="small">On your own machine</span></div>
+    <ol class="task">${t.steps.map(s => `<li>${terms(s)}</li>`).join("")}</ol>
+    ${t.cmd ? `<div class="cmd"><span>${esc(t.cmd)}</span><button data-copy="${esc(t.cmd)}">Copy</button></div>` : ""}
+    <p class="small">${terms(t.after)}</p>
+    <div class="row"><button class="btn go" id="didit">${isDone(a.id,"Tried") ? "Marked as tried" : "I tried it"}</button></div></div>
+    <p class="small">Stuck? Ask the agent for a hint on this step. It'll point you at a file or a line before it gives you an answer.</p></div>`;
+  wireCopy();
+  $("#didit").onclick = () => { mark(a.id,"Tried"); $("#didit").textContent = "Marked as tried"; };
+}
+function wireCopy(){ document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => {
+  const txt = b.dataset.copy, sel = () => { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+  try { navigator.clipboard.writeText(txt).then(() => { b.textContent = "Copied"; }, sel); } catch(e) { sel(); } }); }
+function shuffle(x){ for(let i=x.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [x[i],x[j]] = [x[j],x[i]]; } return x; }
+
+/* ---------- traces ---------- */
+function renderTraceSel(){ const tr = level().traces;
+  $("#scenario").innerHTML = tr.map((t,i) => `<option value="${i}">${esc(t.name)}</option>`).join("");
+  if(S.trace >= tr.length) S.trace = 0; $("#scenario").value = String(S.trace);
+  $("#scenario").closest("section").hidden = !tr.length; }
+$("#scenario").onchange = e => { S.trace = +e.target.value; S.hop = 0; save(); renderHop(); };
+$("#hprev").onclick = () => { S.hop = Math.max(0, S.hop-1); save(); renderHop(); };
+$("#hnext").onclick = () => { const tr = level().traces[S.trace]; S.hop = (S.hop+1) % tr.hops.length; save(); renderHop(); };
+function renderHop(){
+  const tr = level().traces[S.trace]; if(!tr){ hotState = {}; renderMap(); return; }
+  if(S.hop >= tr.hops.length) S.hop = 0;
+  const hop = tr.hops[S.hop], prev = S.hop ? tr.hops[S.hop-1].area : null;
+  hotState = { node: hop.area, edge: prev && prev !== hop.area ? [prev, hop.area] : null };
+  renderMap();
+  $("#hop").innerHTML = `<div class="where">${esc(hop.where)}</div>${terms(hop.what)} ${A(hop.area) ? `<button class="linkish" id="hopgo">Open ${esc(A(hop.area).title)}</button>` : ""}`;
+  const g = $("#hopgo"); if(g) g.onclick = () => open(hop.area);
+  $("#hcount").textContent = `${S.hop+1} / ${tr.hops.length}`;
+  $("#hprev").disabled = S.hop === 0;
+  $("#hnext").textContent = S.hop === tr.hops.length-1 ? "Start again" : "Next";
+}
+
+/* ---------- warm-up, log, research ---------- */
+function renderWarm(){
+  const ids = Object.keys(S.quizOk||{}).filter(id => A(id) && (A(id).quiz||[]).length && Date.now() - S.quizOk[id] > 3600e3);
+  if(!prevVisit || !ids.length){ $("#warm").hidden = true; return; }
+  const a = A(ids[Math.floor(Math.random()*ids.length)]), q = a.quiz[0];
+  $("#warm").hidden = false;
+  $("#warm").innerHTML = `<div class="lbl" style="color:var(--marker-ink)">warm-up from last time: ${esc(a.title)}</div><p>${q.q}</p><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div><div id="wfb"></div>`;
+  $("#warm").querySelectorAll(".opt").forEach(b => b.onclick = () => { const o = q.opts[+b.dataset.i]; b.classList.add(o[1]?"right":"wrong");
+    $("#wfb").innerHTML = `<div class="fb ${o[1]?"ok":"no"}">${terms(o[2])}</div>`; if(o[1]){ S.quizOk[a.id] = Date.now(); save(); } });
+}
+function renderLog(){
+  const word = r => ({g:"look",y:"change",r:"ask"})[r] || r || "look";
+  $("#log").innerHTML = (REPO.log||[]).map(l => `<li><span class="risk ${word(l.risk)}">${word(l.risk)}</span><div>${esc(l.did)}<div class="why">${esc(l.why)}${A(l.area) ? ` <button class="linkish" data-open="${l.area}">${esc(A(l.area).title)}</button>` : ""}</div></div></li>`).join("");
+  $("#log").querySelectorAll("[data-open]").forEach(b => b.onclick = () => open(b.dataset.open));
+  $("#research").innerHTML = RESEARCH.map(r => `<div><b>${esc(r[0])}</b>${esc(r[1])} <a href="${r[3]}" target="_blank" rel="noopener">${esc(r[2])}</a></div>`).join("");
+}
+function renderAll(){ renderDepth(); renderTraceSel(); renderPath(); renderProgress(); renderArea(); renderHop(); }
+
+$("#label").textContent = REPO.label || REPO.name;
+$("#title").textContent = REPO.title || REPO.name;
+$("#intro").innerHTML = terms(REPO.intro || "");
+document.title = (REPO.title || REPO.name);
+renderLog(); renderWarm(); renderAll(); save();
+</script>
+</body>
+</html>
