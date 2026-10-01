@@ -1,22 +1,66 @@
-# NotRedFox's Claude Skills
+# Shadow and Teach
 
-Skills for Claude (Claude Code and the Claude app).
+Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
 
-## Why these exist
+An Agent Skill (`SKILL.md`) that makes an AI coding agent teach you while it works, instead of changing your code in silence.
 
-These are Claude skills I made because I wanted them and couldn't find ones that did what I was after. Each one started as "I wish Claude would just do this properly", got researched, then got tested on real code before going up here. They're built for how I use Claude, and you're welcome to use them, fork them or pull ideas out of them.
+It does three things:
 
-## Skills
+- **Map a repo.** Point it at any codebase and it writes `learn/map.html`: the repo split into areas on a clickable map, with request traces, code walkthroughs and practice for each area. Big repos get layered maps. Areas open into their own maps, and anything not mapped yet can be filled in later by asking "go deeper on <area>".
+- **Replay agent work.** Give it a prompt to run, or point it at something already done (earlier in the chat, a commit, a PR, a Claude Code session log) and it writes a step-by-step replay page. You see each command, its real output and each diff, and you're asked to guess before the result is shown.
+- **Shadow you while it works.** Before each action it says what it's about to do and why. It stops before anything hard to undo, then explains the result, keeping a running log in `learn/lessons.md`.
 
-| Skill | What it does |
+![A map of Flask's own source code](https://raw.githubusercontent.com/NotRedFox/NotRedFoxs-Claude-skills/main/shadow-and-teach/assets/example-map.png)
+
+![A replay of the agent adding a username rule](https://raw.githubusercontent.com/NotRedFox/NotRedFoxs-Claude-skills/main/shadow-and-teach/assets/example-replay.png)
+
+> Click a link in [Examples](#examples) to open a page in your browser.
+
+The teaching choices come from learning-science research. `RESEARCH.md` has the short version and the end of `SKILL.md` has the sources.
+
+## Examples
+
+Click a name to open it in your browser. They're all made by the skill.
+
+| Page | What it is |
 |---|---|
-| [tournament-forge](tournament-forge/) | Makes genuinely different solutions fight 1v1 in a bracket, settles code matches with spec-first tests, then merges the winner with the losers' best ideas. About 22 subagent calls for a standard run. [Real run included](tournament-forge/examples/rate-limiter-run/RUN.md). |
-| [shadow-and-teach](shadow-and-teach/) | Turns Claude into a pair-programming teacher for beginners. Maps any repo into areas you can click into and drill down through, replays what the agent did on a prompt, commit or PR as a step-by-step lesson, and explains each action as it works. Built on learning-science research. [Examples included](shadow-and-teach/examples/), including a map of Flask's own source code. |
+| [flaskr-map](https://notredfox.github.io/NotRedFoxs-Claude-skills/shadow-and-teach/examples/flaskr-map.html) | Flask's small tutorial app, six areas |
+| [flask-internals-map](https://notredfox.github.io/NotRedFoxs-Claude-skills/shadow-and-teach/examples/flask-internals-map.html) | Flask's own source code: 8 areas, two of them opening into their own maps, 17 areas in total. Behaviour claims were checked by running the 494-test suite and about 70 extra checks. |
+| [username-rule-replay](https://notredfox.github.io/NotRedFoxs-Claude-skills/shadow-and-teach/examples/username-rule-replay.html) | A replay of the agent adding a username rule to Flaskr, including the test it broke and how it decided to fix it |
 
 ## Install
 
-Copy a skill folder into `~/.claude/skills/` for Claude Code, or zip the folder and upload it in the Claude app under Settings > Capabilities > Skills.
+- **Claude Code:** copy this folder to `~/.claude/skills/shadow-and-teach/`, or to `.claude/skills/` inside a project.
+- **Claude apps:** upload the folder as a skill (Settings, then Capabilities, then Skills).
+- **Other agents** that read the Agent Skills format: put the folder in their skills directory.
 
-## License
+## Use
 
-MIT
+- "Teach me this repo"
+- "Go deeper on routing"
+- "Replay what you just did", "Replay commit 3f2a1c9", "Explain this PR as a replay"
+- Any task with "teach me as you go"
+
+While it's working you can say `pause`, `hint`, `let me try`, `quiz me`, `recap`, `level up`, `level down` or `skip teaching`.
+
+## Files
+
+| Path | What it is |
+|---|---|
+| `SKILL.md` | The skill |
+| `assets/learning-map.html` | The map page. The agent swaps in the `REPO` data between the marked comments. |
+| `assets/session-replay.html` | The replay page. The agent swaps in the `SESSION` data. |
+| `examples/` | The three pages above |
+| `RESEARCH.md` | Which finding shaped which feature |
+| `CHANGELOG.md` | Version history |
+
+## Limits
+
+- A page is only as accurate as what the agent read and ran. Each area lists which files were actually read, and the skill tells the agent to check behaviour claims by running them. Still, read it like notes from a colleague, not a textbook.
+- Mapping a large repo takes a while and uses a fair amount of the agent's budget. The Flask internals example took about 20 minutes. That's why deeper levels are built on request.
+- Progress on the pages is saved in your browser only.
+
+## Ideas
+
+- A Claude Code hook that records every tool call automatically, so replays don't depend on the agent's memory of what it did.
+- Exporting page progress to a file the agent can read, so it knows what you've already learned.

@@ -1,6 +1,8 @@
 ---
 name: shadow-and-teach
 description: Beginner pair-programming mode. Maps any repo (small or huge) into areas you can drill into, replays what the agent did on a prompt, commit or past session as an interactive lesson, and explains each action as it works. Use when the user says teach me, explain this repo, show me what you did, replay this, shadow mode, or I'm a beginner.
+metadata:
+  version: "1.0.0"
 ---
 
 # Shadow and Teach

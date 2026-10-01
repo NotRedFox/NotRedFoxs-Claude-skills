@@ -1,6 +1,8 @@
 ---
 name: tournament-forge
 description: Run a budget-aware bracket tournament of genuinely different solution approaches (blind builds, grounded attacks, bias-controlled judging, spec-first tests for software, graft-merge synthesis) for hard problems where one answer isn't enough.
+metadata:
+  version: "1.0.0"
 ---
 
 # Tournament Forge

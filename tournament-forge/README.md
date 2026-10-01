@@ -1,5 +1,7 @@
 # Tournament Forge
 
+Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+
 A Claude skill that makes several genuinely different solutions to a hard problem fight 1v1 in a bracket. For code, matches are settled by **running tests**, not by opinion. The winner is merged with the best ideas from the losers into one audited answer.
 
 | | Tournament Forge (standard) | arena-skill (full) |
@@ -11,7 +13,7 @@ A Claude skill that makes several genuinely different solutions to a hard proble
 
 ![Example run](https://raw.githubusercontent.com/NotRedFox/NotRedFoxs-Claude-skills/main/tournament-forge/assets/example-desktop.png)
 
-> The image is an **illustrative example**. For a real recorded run, see [examples/rate-limiter-run](examples/rate-limiter-run/RUN.md). Download [`assets/example.html`](assets/example.html) and open it in a browser for the clickable version.
+> The image is an **illustrative example**. For a real recorded run, see [examples/rate-limiter-run](examples/rate-limiter-run/RUN.md). [Open the clickable version](https://notredfox.github.io/NotRedFoxs-Claude-skills/tournament-forge/assets/example.html) in your browser.
 
 ## Why another debate skill?
 
