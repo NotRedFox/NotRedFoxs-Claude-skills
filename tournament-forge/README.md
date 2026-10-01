@@ -1,8 +1,8 @@
 # Tournament Forge
 
-Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
 
-A Claude skill that makes several genuinely different solutions to a hard problem fight 1v1 in a bracket. For code, matches are settled by **running tests**, not by opinion. The winner is merged with the best ideas from the losers into one audited answer.
+A Claude skill that makes several solutions that work in different ways to a hard problem fight 1v1 in a bracket. For code, matches are settled by **running tests**, not by opinion. The winner is merged with the best ideas from the losers into one audited answer.
 
 | | Tournament Forge (standard) | arena-skill (full) |
 |---|---|---|
@@ -50,7 +50,7 @@ If the answer is code, a script, a config, a query or an API, test mode turns on
 3. **Distinguishing inputs.** When two finalists pass the same tests, an agent looks for an input where they behave differently, and both get run on it ([S*](https://arxiv.org/abs/2502.14382) idea).
 4. **You get the tests.** The final answer ships with the suite, plus a regression test for every attack that was upheld.
 
-If code can't actually run in your environment, the tests are traced by hand and clearly marked `traced`, not `run`.
+If code can't run in your environment, the tests are traced by hand and clearly marked `traced`, not `run`.
 
 ### Critic lenses
 
@@ -69,7 +69,7 @@ If code can't actually run in your environment, the tests are traced by hand and
 
 For comparison, arena-skill's `--quick` mode is 91 calls (~5.2M tokens) and its full run is 595 calls (~34M tokens).
 
-**How tokens are estimated:** measured, not guessed. In the real run each subagent call cost about 57k tokens, mostly fixed overhead that doesn't depend on prompt size. The same 57k per call is applied to every tool, so the comparison is really about call counts. Your numbers will differ by environment, but the ratio holds.
+**How tokens are estimated:** measured, not guessed. In the real run each subagent call cost about 57k tokens, mostly fixed overhead that doesn't depend on prompt size. The same 57k per call is applied to every tool, so the comparison comes down to call counts. Your numbers will differ by environment, but the ratio holds.
 
 Cheap models do screening and early judging. Strong models write the brief, list the approaches, judge the final and do the synthesis.
 
@@ -107,7 +107,7 @@ Then ask something like:
 
 > Use tournament-forge on: how should we add rate limiting to our public API?
 
-It works best with subagents. Without them, it runs in a lower-fidelity single-context mode and says so. For simple questions it tells you the tournament would waste tokens and just answers.
+It works best with subagents. Without them, it runs in a lower-fidelity single-context mode and says so. For simple questions it tells you the tournament would waste tokens and answers directly.
 
 ## Credits
 

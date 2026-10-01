@@ -23,6 +23,6 @@ def test_different_non_latin_titles_do_not_collide():
     assert slugify("東京") != slugify("大阪")
 
 
-@pytest.mark.xfail(strict=True, reason="German sharp s is dropped. See the log, open question 1.")
+@pytest.mark.xfail(strict=True, reason="B4: sharp s is dropped")
 def test_sharp_s_becomes_ss():
     assert slugify("Straße") == "strasse"

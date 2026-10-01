@@ -1,6 +1,6 @@
 # Shadow and Teach
 
-Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
 
 An Agent Skill (`SKILL.md`) that makes an AI coding agent teach you while it works, instead of changing your code in silence.
 
@@ -70,7 +70,7 @@ While it's working you can say `pause`, `hint`, `let me try`, `quiz me`, `recap`
 
 ## Limits
 
-- A page is only as accurate as what the agent read and ran. Each area lists which files were actually read, and the skill tells the agent to check behaviour claims by running them. Still, read it like notes from a colleague, not a textbook.
+- A page is only as accurate as what the agent read and ran. Each area lists which files were opened and read, and the skill tells the agent to check behaviour claims by running them. Still, read it like notes from a colleague, not a textbook.
 - Mapping a large repo takes a while and uses a fair amount of the agent's budget. The Flask internals example took about 20 minutes. That's why deeper levels are built on request.
 - Progress on the pages is saved in your browser only.
 

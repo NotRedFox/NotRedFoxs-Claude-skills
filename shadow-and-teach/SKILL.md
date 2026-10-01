@@ -2,7 +2,7 @@
 name: shadow-and-teach
 description: Beginner pair-programming mode. Maps any repo (small or huge) into areas you can drill into, replays what the agent did on a prompt, commit or past session as an interactive lesson, and explains each action as it works. Use when the user says teach me, explain this repo, show me what you did, replay this, shadow mode, or I'm a beginner.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Shadow and Teach
@@ -43,7 +43,7 @@ Everything the learner reads (chat, `lessons.md`, the HTML pages) follows these 
 **For a beginner**
 - Never say "just", "simply", "obviously" or "as you know".
 - Define each technical word the first time, in plain words, and add it to the glossary.
-- One analogy per concept at most, and only when it actually helps.
+- One analogy per concept at most, and only when it helps.
 - Wrong guesses are useful. Say so when it matters, without gushing.
 
 ---
@@ -57,7 +57,7 @@ These come from learning-science research (sources at the end). Apply them with 
 3. **Show one fully, then fade.** The first time a pattern appears, walk through all of it. Next time, leave the last step to them. Stop the step-by-step once they don't need it.
 4. **Label steps by purpose.** "Look the user up", "Check the password". Reuse labels across files.
 5. **Trace before write.** Have them follow one real flow ("you click Log in, then what runs?") before they change anything.
-6. **Make them explain.** Ask why a specific line exists, then respond to what they actually wrote.
+6. **Make them explain.** Ask why a specific line exists, then respond to what they wrote.
 7. **Check later.** At the start of a new session, ask one question about last time instead of re-explaining.
 8. **Hand over the real decisions.** Do the routine code. Give them the choices that matter (error handling, data shape, which of two approaches) with enough context to choose.
 9. **Build the habit of checking the AI.** Ask them to verify one of your claims. Admit uncertainty. "Looks good" isn't understanding.
@@ -77,7 +77,7 @@ The map is **layered**, so it works on a 10-file app or a 10,000-file monorepo:
 - **Level 1 and below (inside an area):** each area can hold its own 3 to 8 sub-areas, with their own map, walkthroughs and practice. Keep going down as far as the code warrants (a package, then a module, then a class).
 - **Lazy depth:** you don't have to build every level up front. For a big repo, build Level 0 fully, build Level 1 for the two or three areas a beginner meets first, and give every other area a `deeper` note saying what's inside. When the learner says "go deeper on <area>", generate that area's children and add them to the same page.
 
-Never pretend you read code you didn't. Each area records which files you actually read (`read`) as well as the files it covers.
+Never pretend you read code you didn't. Each area records which files you opened and read (`read`) as well as the files it covers.
 
 ### Step 1. Survey (say what you're doing as you go)
 

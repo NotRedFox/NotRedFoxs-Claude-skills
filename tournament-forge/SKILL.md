@@ -1,13 +1,13 @@
 ---
 name: tournament-forge
-description: Run a budget-aware bracket tournament of genuinely different solution approaches (blind builds, grounded attacks, bias-controlled judging, spec-first tests for software, graft-merge synthesis) for hard problems where one answer isn't enough.
+description: Run a budget-aware bracket tournament of solution approaches that differ in mechanism (blind builds, grounded attacks, bias-controlled judging, spec-first tests for software, graft-merge synthesis) for hard problems where one answer isn't enough.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Tournament Forge
 
-Make several *genuinely different* solutions to a hard problem fight 1v1 in a bracket, with grounded attacks and bias-controlled judging, then forge the survivor plus the best parts of the losers into one audited blueprint. For software, the fights are settled by running tests wherever possible, not by opinion. Built to be cheaper and more trustworthy than "spawn N agents and let them argue".
+Make several solutions that differ in *mechanism* to a hard problem fight 1v1 in a bracket, with grounded attacks and bias-controlled judging, then forge the survivor plus the best parts of the losers into one audited blueprint. For software, the fights are settled by running tests wherever possible, not by opinion. Built to be cheaper and more trustworthy than "spawn N agents and let them argue".
 
 ## Why it is designed this way (research this skill is built on)
 
@@ -72,7 +72,7 @@ One mid call, a **Test Writer** that sees ONLY the Brief. It never sees any solu
 - Tests target a small interface the Brief defines (function names, endpoints, CLI) so every contender can be run against the same suite. Put that interface in the Brief and in every build card.
 - If execution is impossible here (no runtime, needs external services), write the tests anyway as precise scenario scripts and mark results as `traced`, not `run`. Say so in the final output.
 
-### Stage 1: Enumerate genuinely different approaches
+### Stage 1: Enumerate approaches that differ in mechanism
 
 Do this yourself, following this prompt:
 > List {2 x N} distinct approaches to this Brief. Each must differ in *core mechanism* (not wording, tone, or emphasis). For each give: name, one-line mechanism, key bet or assumption, and a rough probability that a typical expert would propose it. At least a third must be below 20% probability. Include at least one "minimal / do-less" approach and one "reframe the problem" approach.
@@ -106,7 +106,7 @@ Each match gets a **critique lens**; rotate them and add domain lenses as needed
 - **Pessimistic Auditor**: failure modes, security holes, edge cases, wrong assumptions.
 - **Simplicity / UX Architect**: what a human has to understand, operate, or maintain.
 - **Cost Economist**: tokens, compute, money, time to build, operational burden.
-- **Reality Checker**: does it actually satisfy every hard constraint and check?
+- **Reality Checker**: does it satisfy every hard constraint and check?
 
 Match procedure:
 1. **test_mode, both pass the same tests: distinguishing input.** One cheap call proposes 1 to 3 inputs where A and B would behave differently (S* style). Run both. Decide which output the Brief says is correct; if the Brief can't decide it, the input is not decisive. A decisive result counts as a verified failure for the loser.
@@ -114,7 +114,7 @@ Match procedure:
 3. **Rebuttal (only if needed):** if one disputable attack would decide the match, give the targeted builder a single rebuttal of 100 words or fewer. Otherwise skip it.
 4. **Judge call:** score both on the rubric using test results and surviving attacks, then pick a winner with a margin (clear or narrow). Rules: executed evidence beats argument; length and polish are not criteria; cite rubric items.
 5. **Position swap on close calls:** if the margin is narrow, re-judge with A and B swapped in a fresh call. If the verdicts disagree, it's a tie: advance the one that wins the highest-weighted rubric item.
-6. **Harvest grafts:** record the loser's strongest unique ideas that survived critique into a Graft List (idea plus the rubric item it improves). Discard only logic that was actually broken.
+6. **Harvest grafts:** record the loser's strongest unique ideas that survived critique into a Graft List (idea plus the rubric item it improves). Discard only logic that was shown to be broken.
 
 Winners carry forward their build plus a note of three lines or fewer: attacks survived, fixes owed. Never carry transcripts.
 
@@ -150,4 +150,4 @@ If the deliverable is long (a design doc or plan), offer to put it into a docume
 - Unverifiable criticism doesn't eliminate anything. Executed evidence outranks argument.
 - No conversational filler in any subagent output; enforce the formats and word caps.
 - Respect the tier's call budget; if a stage would exceed it, shrink the bracket and say so.
-- If the problem turns out simple, stop early and just answer.
+- If the problem turns out simple, stop early and answer directly.
