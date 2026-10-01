@@ -1,0 +1,4 @@
+Customer complaints:
+- Acme: 3 items at 19.99 showed $64.91, we expected $64.92 (tax 8.25%)
+- Hollis & Co: 10% discount on 200.00 came out lower than our spreadsheet. Spreadsheet: discount first, then tax = 194.85
+- invoice summary showed $64.9 instead of $64.90

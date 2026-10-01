@@ -9,7 +9,7 @@ A Claude skill that makes several solutions that work in different ways to a har
 | Subagent calls | ~22 | 595 |
 | Estimated tokens | ~1.3M | ~34M |
 
-**Tested for real:** see [examples/rate-limiter-run](examples/rate-limiter-run/RUN.md). 4 approaches, 9 subagent calls, ~521k tokens (measured). The tests knocked out 2 contenders, the red-team found a real float bug, and the final code passes 15/15 tests plus 3,000 brute-force fuzz scenarios.
+**Tested for real:** see [examples/rate-limiter-run](examples/rate-limiter-run/RUN.md). 4 approaches, 9 subagent calls, ~521k tokens (measured). The spec tests knocked out one contender and the brute-force fuzz knocked out another, the red-team found a real float bug, and the final code passes 15/15 tests plus 3,000 brute-force fuzz scenarios.
 
 ![Example run](https://raw.githubusercontent.com/NotRedFox/NotRedFoxs-Claude-skills/main/tournament-forge/assets/example-desktop.png)
 

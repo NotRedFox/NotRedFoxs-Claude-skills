@@ -1,0 +1,16 @@
+Scenario A: 100 SYNTHETIC cycles, rinse spins weaker than the final spin. Early = alert before the real end.
+detector               correct  early  missed  median delay min  max delay min
+naive quiet 3 min            6     94       0               2.9            3.1
+naive quiet 6 min           70     30       0               5.8            6.1
+naive quiet 10 min          93      7       0               9.8           10.2
+spin+quiet 2 min           100      0       0               1.8            2.1
+spin+quiet 6 min           100      0       0               5.8            6.1
+
+Scenario B: 100 SYNTHETIC cycles, rinse spins as hard as the final spin (harder case).
+detector               correct  early  missed  median delay min  max delay min
+naive quiet 3 min            6     94       0               2.9            2.9
+naive quiet 6 min           66     34       0               5.8            6.0
+naive quiet 10 min          99      1       0               9.9           10.1
+spin+quiet 2 min             1     99       0               1.8            1.8
+spin+quiet 6 min           100      0       0               5.8            6.0
+

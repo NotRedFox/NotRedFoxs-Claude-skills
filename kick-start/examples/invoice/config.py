@@ -1,0 +1,3 @@
+STRIPE_KEY = "<SECRET>"
+ADMIN_CONTACT = "<EMAIL>"
+EXPORT_DIR = "~/invoices/out"

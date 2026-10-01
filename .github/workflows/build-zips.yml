@@ -7,6 +7,8 @@ on:
       - "shadow-and-teach/**"
       - "tournament-forge/**"
       - "kick-start/**"
+      - "research-solving/**"
+      - "problem-solve/**"
       - "scripts/build-zips.sh"
   workflow_dispatch:
 

@@ -18,7 +18,14 @@ It also:
 - **Removes personal info** (names, emails, keys, home folder paths) from everything it writes.
 - **Writes plainly.** It checks its writing for AI giveaways: em dashes, filler like "genuinely" or "robust", and stock phrases like "it's worth noting".
 
-See a worked example in [examples/slugify](examples/slugify/): the [conversation log](examples/slugify/kickstart/2026-10-01-url-slugs.md), [BUGS.md](examples/slugify/BUGS.md), the [README with its Architecture section](examples/slugify/README.md), the [code](examples/slugify/slug.py) and the [tests](examples/slugify/test_slug.py).
+## Example
+
+[examples/invoice](examples/invoice/) is real output from two separate conversations on a small invoice project. The starting code is in [before/](examples/invoice/before/).
+
+1. **"Customers are complaining about invoice totals, sort it out."** Claude fixed five bugs, logged each one in [BUGS.md](examples/invoice/BUGS.md), wrote the [Architecture section](examples/invoice/README.md) and [the log](examples/invoice/kickstart/2026-10-01-invoice-totals.md). 26 tests, 19 of which fail on the starting code.
+2. **"Add CSV export"**, in a fresh conversation with no memory of the first. Claude read `BUGS.md` first and built the export around the money lessons from bugs B1 to B5. It found one more bug (B6), logged it as open with a test that flags when it's fixed, and updated the Architecture section. See [the log](examples/invoice/kickstart/2026-10-01-invoice-csv-export.md). 42 tests pass, plus 2 expected failures for B6.
+
+`config.py` held a made-up payment key, email and home folder path to test the personal info scrub. None of them reached the logs, and they've been replaced with placeholders here.
 
 ## Install
 

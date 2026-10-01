@@ -1,0 +1,4 @@
+cycle 0: real end at 4739s (79.0 min). script said: notified at t=5095s, HTTP 200
+cycle 1: real end at 4555s (75.9 min). script said: notified at t=4910s, HTTP 200
+cycle 2: real end at 4791s (79.9 min). script said: notified at t=5145s, HTTP 200
+server received: [('/test-topic', 'Washing machine', 'The washing machine has finished.'), ('/test-topic', 'Washing machine', 'The washing machine has finished.'), ('/test-topic', 'Washing machine', 'The washing machine has finished.')]

@@ -1,0 +1,7 @@
+40 SYNTHETIC 3-minute clips per row, 20 with the end beep and 20 without.
+ beep SNR dB   found  missed  false alerts
+          10   20/20       0          0/40
+           0   20/20       0          0/40
+          -5   16/20       4          0/40
+         -10   13/20       7          0/40
+         -15    0/20      20          0/40
