@@ -16,6 +16,7 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 | [research-solving](research-solving/) | 1.0.1 | Researches what you're building in three rings: open-source code to borrow from, papers from your field, and ideas from far-off fields like quant research, biometrics and browser signals. Rates each idea for real signal versus hype and ends with cheap first tests. [Example included](research-solving/examples/procrastination-extension/research/2026-10-01-procrastination-nudge-extension.md). |
 | [problem-solve](problem-solve/) | 1.0.0 | For problems with no obvious route, like no API. Climbs from obvious to more creative approaches, tests each one for real instead of stopping at "impossible", uses odd resources you suggest, and writes a ChatGPT prompt with everything tried so far. [Example included](problem-solve/examples/washing-machine/problem-solve/2026-10-01-washing-machine-done.md). |
 | [claim-check](claim-check/) | 1.0.0 | Checks whether your README and docs are true. Lists every claim (numbers, commands, behaviour, links, comparisons), checks each by running or reading the code, and fixes the docs where they're wrong. It found 11 false or partly true claims in this repo's own READMEs. [Examples included](claim-check/). |
+| [auditor](auditor/) | 1.0.0 | Audits one part of your project at a time, then the whole thing together. Gives a time estimate and asks every question up front, tests your tests, simulates real users, load and long runs, and looks for memory leaks. Found all 7 planted problems in a test app. [Example included](auditor/examples/notesapp/ANSWER-KEY.md). |
 
 ## Install
 
@@ -29,6 +30,7 @@ Pick a skill, then follow the steps for where you use Claude.
 | research-solving | [research-solving.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/research-solving.zip) |
 | problem-solve | [problem-solve.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/problem-solve.zip) |
 | claim-check | [claim-check.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/claim-check.zip) |
+| auditor | [auditor.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/auditor.zip) |
 
 ### Claude app (claude.ai, desktop or phone)
 
@@ -74,6 +76,12 @@ claim-check:
 
 ```
 mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/claim-check.zip -o /tmp/claim-check.zip && unzip -oq /tmp/claim-check.zip -d ~/.claude/skills && rm /tmp/claim-check.zip
+```
+
+auditor:
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/auditor.zip -o /tmp/auditor.zip && unzip -oq /tmp/auditor.zip -d ~/.claude/skills && rm /tmp/auditor.zip
 ```
 
 On Windows, download the zip and unzip it into `.claude\skills` in your user folder.

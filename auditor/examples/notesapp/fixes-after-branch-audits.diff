@@ -1,0 +1,54 @@
+diff --git a/app/auth.py b/app/auth.py
+index 72dacc4..f1fd9e6 100644
+--- a/app/auth.py
++++ b/app/auth.py
+@@ -12,11 +12,11 @@ class Auth:
+             raise ValueError("username and password are required")
+         if username in self.users:
+             raise ValueError("username taken")
+-        self.users[username] = hashlib.sha256(password.lower().encode()).hexdigest()
++        self.users[username] = hashlib.sha256(password.encode()).hexdigest()
+ 
+     def login(self, username, password):
+         stored = self.users.get(username)
+-        if stored is None or stored != hashlib.sha256(password.lower().encode()).hexdigest():
++        if stored is None or stored != hashlib.sha256(password.encode()).hexdigest():
+             return None
+         token = secrets.token_hex(16)
+         self.tokens[token] = username
+diff --git a/app/notes.py b/app/notes.py
+index 0f8217f..eeadc00 100644
+--- a/app/notes.py
++++ b/app/notes.py
+@@ -6,7 +6,8 @@ class Notes:
+         self.notes = {}
+         self.next_id = 1
+ 
+-    def create(self, owner, text, tags=[]):
++    def create(self, owner, text, tags=None):
++        tags = list(tags or [])
+         nid = self.next_id
+         time.sleep(0.001)
+         self.next_id = nid + 1
+diff --git a/app/server.py b/app/server.py
+index 1b184d5..d294ef3 100644
+--- a/app/server.py
++++ b/app/server.py
+@@ -44,12 +44,15 @@ class Handler(BaseHTTPRequestHandler):
+                 user = self._user()
+                 if not user:
+                     return self._send(401, {"error": "login required"})
+-                return self._send(201, NOTES.create(user, body.get("text", "")))
++                note = NOTES.create(user, body.get("text", ""))
++                for key in [k for k in SEARCH.cache if k[0] == user]:
++                    del SEARCH.cache[key]
++                return self._send(201, note)
+             return self._send(404, {"error": "not found"})
+         except ValueError as e:
+             return self._send(400, {"error": str(e)})
+         except Exception:
+-            return self._send(500, {"error": traceback.format_exc()})
++            return self._send(500, {"error": "internal error"})
+ 
+     def do_GET(self):
+         url = urlparse(self.path)
