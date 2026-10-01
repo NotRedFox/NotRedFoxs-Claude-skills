@@ -15,7 +15,38 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 
 ## Install
 
-Copy a skill folder into `~/.claude/skills/` for Claude Code, or zip the folder and upload it in the Claude app under Settings > Capabilities > Skills.
+Pick a skill, then follow the steps for where you use Claude.
+
+| Skill | Download |
+|---|---|
+| tournament-forge | [tournament-forge.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge.zip) |
+| shadow-and-teach | [shadow-and-teach.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip) |
+
+### Claude app (claude.ai, desktop or phone)
+
+1. Download the zip from the table above. Don't unzip it.
+2. In Claude, open **Settings** and find **Skills**.
+3. Upload the zip file.
+
+### Claude Code
+
+Paste one of these into your terminal (Mac or Linux), then restart Claude Code.
+
+tournament-forge:
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge.zip -o /tmp/tournament-forge.zip && unzip -oq /tmp/tournament-forge.zip -d ~/.claude/skills && rm /tmp/tournament-forge.zip
+```
+
+shadow-and-teach:
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip -o /tmp/shadow-and-teach.zip && unzip -oq /tmp/shadow-and-teach.zip -d ~/.claude/skills && rm /tmp/shadow-and-teach.zip
+```
+
+On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
+
+To update a skill later, do the same steps again.
 
 ## Versions
 

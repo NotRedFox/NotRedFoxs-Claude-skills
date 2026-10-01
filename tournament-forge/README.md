@@ -85,9 +85,23 @@ Cheap models do screening and early judging. Strong models write the brief, list
 
 ## Install
 
-**Claude Code:** copy the `tournament-forge` folder into `~/.claude/skills/` (or your project's `.claude/skills/`).
+### Claude app (claude.ai, desktop or phone)
 
-**Claude app:** zip the `tournament-forge` folder and upload it under Settings > Capabilities > Skills.
+1. Download [tournament-forge.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge.zip). Don't unzip it.
+2. In Claude, open **Settings** and find **Skills**.
+3. Upload the zip file.
+
+### Claude Code
+
+Paste this into your terminal (Mac or Linux):
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge.zip -o /tmp/tournament-forge.zip && unzip -oq /tmp/tournament-forge.zip -d ~/.claude/skills && rm /tmp/tournament-forge.zip
+```
+
+Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
+
+To update later, do the same steps again.
 
 Then ask something like:
 

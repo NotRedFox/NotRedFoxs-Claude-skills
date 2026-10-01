@@ -30,9 +30,23 @@ Click a name to open it in your browser. They're all made by the skill.
 
 ## Install
 
-- **Claude Code:** copy this folder to `~/.claude/skills/shadow-and-teach/`, or to `.claude/skills/` inside a project.
-- **Claude apps:** upload the folder as a skill (Settings, then Capabilities, then Skills).
-- **Other agents** that read the Agent Skills format: put the folder in their skills directory.
+### Claude app (claude.ai, desktop or phone)
+
+1. Download [shadow-and-teach.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip). Don't unzip it.
+2. In Claude, open **Settings** and find **Skills**.
+3. Upload the zip file.
+
+### Claude Code
+
+Paste this into your terminal (Mac or Linux):
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip -o /tmp/shadow-and-teach.zip && unzip -oq /tmp/shadow-and-teach.zip -d ~/.claude/skills && rm /tmp/shadow-and-teach.zip
+```
+
+Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
+
+To update later, do the same steps again.
 
 ## Use
 
