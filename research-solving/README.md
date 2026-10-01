@@ -1,6 +1,6 @@
 # Research Solving
 
-Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.1.0. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill for when you're building something and want to know what's already out there. It researches in three rings and ends with a short list of things to try, each with a cheap first test.
 
@@ -14,15 +14,20 @@ Every idea from another field is rated **High**, **Medium**, **Low** or **Hype**
 
 It never cites a paper from memory. Models make up citations (one study found 18% of GPT-4's and 55% of GPT-3.5's were fabricated), so every source in the report is one it opened, or is marked `unverified`.
 
+## How it works
+
+Three researchers run at the same time, one per ring, each in its own subagent so their searching doesn't fill up your conversation. Then the lead (your main Claude) opens the sources behind the top ideas, fixes anything that doesn't hold up, sets the final ratings and writes the report. Without subagents it runs the rings one after another.
+
 ## Example
 
-[examples/procrastination-extension](examples/procrastination-extension/research/2026-10-01-procrastination-nudge-extension.md) is a real run on: "I want to build a browser extension that notices when I'm procrastinating and nudges me back to work. Runs locally, no cloud."
+[examples/procrastination-extension-team](examples/procrastination-extension-team/research/2026-10-01-procrastination-nudge-extension.md) is a real run of the agent team on: "I want to build a browser extension that notices when I'm procrastinating and nudges me back to work. Runs locally, no cloud."
 
-- It opened 26 sources: 9 open-source projects (with code and commit history for the closest ones), browser API docs and package listings.
-- It ranked 8 things to try, from a simple activity logger (High) down to typing-rhythm signals (Low, and only with consent).
-- It ran the first test: a keyword scorer that got 38 of 40 sample tab titles right ([script](examples/procrastination-extension/research/first-test/keyword-baseline.mjs)). The report says the 40 titles were written by the same agent, so the score is an upper bound.
+- The three researchers returned 7 open-source projects (all cloned and read), 9 papers and 9 ideas from other fields.
+- The lead's check changed two things. A researcher said people take about 8.5 minutes to get back to work after an email alert; the paper's figure is 16 minutes 33 seconds (8 minutes 48 seconds was the reply time for chat alerts). And one idea was cut from High to Medium because its paper couldn't be opened.
+- It ranks 8 things to try, from a local activity logger (High) down to typing-rhythm signals (Low, and only with consent).
+- It ran where most paper websites were blocked, so 8 sources are marked `unverified`. On a normal connection the researchers open and check each one.
 
-This run was made where every paper website was blocked, so the 4 papers it found are marked `unverified` and the ideas resting on them are rated Medium at most. On a normal connection it opens and checks each paper.
+For comparison, [examples/procrastination-extension](examples/procrastination-extension/research/2026-10-01-procrastination-nudge-extension.md) is the same request run by version 1.0, one agent working alone. It could open no papers; the team opened 5.
 
 ## Install
 

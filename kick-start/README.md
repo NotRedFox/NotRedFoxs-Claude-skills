@@ -18,6 +18,16 @@ It also:
 - **Removes personal info** (names, emails, keys, home folder paths) from everything it writes.
 - **Writes plainly.** It checks its writing for AI giveaways: em dashes, filler like "genuinely" or "robust", and stock phrases like "it's worth noting".
 
+## Only want the log?
+
+If all you want is for Claude to keep track of what it tried, you don't need the skill. Add this to your project's `CLAUDE.md`:
+
+```
+After each approach you try, add a line to kickstart/log.md: what you tried, whether it worked, and the evidence (command and real output). Read it before starting work.
+```
+
+The skill adds what doesn't fit in a line: the `BUGS.md` format and the rule to reread it before touching a file, tests that must fail on the broken code before they count, the README architecture section, the personal info scrub and the writing checks. That's about 230 lines of instructions, which is why it's a skill and not part of `CLAUDE.md`: a skill loads only when used, while `CLAUDE.md` loads in every session.
+
 ## Example
 
 [examples/invoice](examples/invoice/) is real output from two separate conversations on a small invoice project. The starting code is in [before/](examples/invoice/before/).

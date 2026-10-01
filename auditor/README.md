@@ -1,6 +1,6 @@
 # Auditor
 
-Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that audits your project one part at a time, then audits the whole thing together. It checks that each part works under real use, and that the tests would catch it if it didn't.
 
