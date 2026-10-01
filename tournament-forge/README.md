@@ -1,6 +1,6 @@
 # Tournament Forge
 
-Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.3. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that makes several solutions that work in different ways to a hard problem fight 1v1 in a bracket. For code, matches are settled by **running tests**, not by opinion. The winner is merged with the best ideas from the losers into one audited answer.
 
@@ -87,7 +87,7 @@ Cheap models do screening and early judging. The orchestrator writes the brief, 
 
 ### Claude app (claude.ai, desktop or phone)
 
-1. Download [tournament-forge.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge.zip). Don't unzip it.
+1. Download [tournament-forge-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge-claude-app.zip). Don't unzip it.
 2. In Claude, open **Settings** and find **Skills**.
 3. Upload the zip file.
 
@@ -102,6 +102,9 @@ mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Cl
 Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
 
 To update later, do the same steps again.
+
+The two downloads hold the same skill. The Claude Code one also has Claude Code settings (an argument hint, and a setting so it only runs when you ask), which the Claude app doesn't accept.
+It only runs when you type `/tournament-forge`, so Claude never starts it on its own.
 
 Then ask something like:
 

@@ -1,8 +1,13 @@
 ---
 name: auditor
-description: Audits one branch of a project's architecture at a time, then runs a final audit across the whole thing. Gives a time estimate first, asks for every permission up front, tests the existing tests (or writes them), simulates real users, load and long runs, looks for memory leaks, and writes a report. Use when the user says audit, audit this part, or final audit.
+description: "Audits one branch of a project's architecture at a time, then runs a final audit across the whole thing. Gives a time estimate first, asks for every permission up front, tests the existing tests (or writes them), simulates real users, load and long runs, looks for memory leaks, and writes a report. Use when the user says audit, audit this part, or final audit."
+argument-hint: "[branch path | final]"
+disable-model-invocation: true
+license: MIT
+compatibility: "Built for Claude Code. It runs tests, servers and load tests, and takes a while, so it only runs when you type /auditor."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
+  author: NotRedFox
 ---
 
 # Auditor

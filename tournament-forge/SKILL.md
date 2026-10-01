@@ -1,8 +1,13 @@
 ---
 name: tournament-forge
-description: Run a budget-aware bracket tournament of solution approaches that differ in mechanism (blind builds, grounded attacks, bias-controlled judging, spec-first tests for software, graft-merge synthesis) for hard problems where one answer isn't enough.
+description: "Run a budget-aware bracket tournament of solution approaches that differ in mechanism (blind builds, grounded attacks, bias-controlled judging, spec-first tests for software, graft-merge synthesis) for hard problems where one answer isn't enough."
+argument-hint: "[quick|standard|deep] <problem>"
+disable-model-invocation: true
+license: MIT
+compatibility: "Works best in Claude Code with subagents. A run uses about 10 to 45 subagent calls, so it only runs when you type /tournament-forge."
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
+  author: NotRedFox
 ---
 
 # Tournament Forge

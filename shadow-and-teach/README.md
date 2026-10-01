@@ -1,6 +1,6 @@
 # Shadow and Teach
 
-Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.3. See [CHANGELOG.md](CHANGELOG.md).
 
 An Agent Skill (`SKILL.md`) that makes an AI coding agent teach you while it works, instead of changing your code in silence.
 
@@ -32,7 +32,7 @@ Click a name to open it in your browser. They're all made by the skill.
 
 ### Claude app (claude.ai, desktop or phone)
 
-1. Download [shadow-and-teach.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip). Don't unzip it.
+1. Download [shadow-and-teach-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach-claude-app.zip). Don't unzip it.
 2. In Claude, open **Settings** and find **Skills**.
 3. Upload the zip file.
 
@@ -47,6 +47,9 @@ mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Cl
 Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
 
 To update later, do the same steps again.
+
+The two downloads hold the same skill. The Claude Code one also has Claude Code settings (an argument hint), which the Claude app doesn't accept.
+Claude can start it on its own when your request matches, or you can type `/shadow-and-teach`.
 
 ## Use
 

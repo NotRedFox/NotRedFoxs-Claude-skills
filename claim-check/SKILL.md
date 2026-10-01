@@ -1,8 +1,13 @@
 ---
 name: claim-check
-description: Audits a README or docs against the real project. Lists every checkable claim (numbers, commands, behaviour, file names, links, comparisons, outside facts), checks each by running or reading the code, then fixes the docs where they are wrong. Use when the user says claim check, check the README, are the docs true, or before a release.
+description: "Audits a README or docs against the real project. Lists every checkable claim (numbers, commands, behaviour, file names, links, comparisons, outside facts), checks each by running or reading the code, then fixes the docs where they are wrong. Use when the user says claim check, check the README, are the docs true, or before a release."
+argument-hint: "[files or folders to check]"
+disable-model-invocation: true
+license: MIT
+compatibility: "Claude Code recommended, since it runs commands and edits your docs. Only runs when you type /claim-check."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
+  author: NotRedFox
 ---
 
 # Claim Check

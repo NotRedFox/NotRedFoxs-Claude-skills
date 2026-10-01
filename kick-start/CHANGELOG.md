@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+Added Claude Code settings: licence and compatibility notes. The Claude app download keeps only the fields the app accepts.
+
 ## 1.1.0
 
 - Keeps `BUGS.md`, a permanent bug log it rereads before changing code.

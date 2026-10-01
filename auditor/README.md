@@ -1,6 +1,6 @@
 # Auditor
 
-Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that audits your project one part at a time, then audits the whole thing together. It checks that each part works under real use, and that the tests would catch it if it didn't.
 
@@ -34,7 +34,7 @@ It reports and adds tests. It doesn't change your code unless you say yes to a s
 
 ### Claude app (claude.ai, desktop or phone)
 
-1. Download [auditor.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/auditor.zip). Don't unzip it.
+1. Download [auditor-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/auditor-claude-app.zip). Don't unzip it.
 2. In Claude, open **Settings** and find **Skills**.
 3. Upload the zip file.
 
@@ -51,6 +51,9 @@ mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Cl
 Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
 
 To update later, do the same steps again.
+
+The two downloads hold the same skill. The Claude Code one also has Claude Code settings (an argument hint, and a setting so it only runs when you ask), which the Claude app doesn't accept.
+It only runs when you type `/auditor`, so Claude never starts it on its own.
 
 ## Use
 

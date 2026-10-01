@@ -1,8 +1,13 @@
 ---
 name: research-solving
-description: Researches what a user is building in three rings. Similar open-source projects and code, papers from the user's own field, then ideas from far-off fields (quant research, biometrics, browser signals, local assistants), each rated for real signal versus hype. Ends with a ranked list of cheap experiments. Use when the user says research solving, what's out there for this, or find ideas for what I'm building.
+description: "Researches what a user is building in three rings. Similar open-source projects and code, papers from the user's own field, then ideas from far-off fields (quant research, biometrics, browser signals, local assistants), each rated for real signal versus hype. Ends with a ranked list of cheap experiments. Use when the user says research solving, what's out there for this, or find ideas for what I'm building."
+argument-hint: "<what you are building>"
+disable-model-invocation: true
+license: MIT
+compatibility: "Needs web search and web fetch. Uses many searches, so it only runs when you type /research-solving."
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
+  author: NotRedFox
 ---
 
 # Research Solving

@@ -1,6 +1,6 @@
 # Problem Solve
 
-Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill for problems where the normal route is closed: no API, no integration, "that can't be done". Instead of stopping, Claude climbs a ladder of approaches that get more creative at each step, and tests each one for real.
 
@@ -36,7 +36,7 @@ How it works:
 
 ### Claude app (claude.ai, desktop or phone)
 
-1. Download [problem-solve.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/problem-solve.zip). Don't unzip it.
+1. Download [problem-solve-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/problem-solve-claude-app.zip). Don't unzip it.
 2. In Claude, open **Settings** and find **Skills**.
 3. Upload the zip file.
 
@@ -51,6 +51,9 @@ mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Cl
 Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
 
 To update later, do the same steps again.
+
+The two downloads hold the same skill. The Claude Code one also has Claude Code settings (an argument hint), which the Claude app doesn't accept.
+Claude can start it on its own when your request matches, or you can type `/problem-solve`.
 
 ## Use
 

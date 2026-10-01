@@ -1,8 +1,11 @@
 ---
 name: kick-start
-description: Keeps a project's memory up to date as you work. Logs every approach in the conversation, keeps a bug log the agent rereads and learns from, keeps the README architecture section current, writes tests that check the goal, and writes plain, professional comments. Use when the user says kick start, log this, or what have we tried.
+description: "Keeps a project's memory up to date as you work. Logs every approach in the conversation, keeps a bug log the agent rereads and learns from, keeps the README architecture section current, writes tests that check the goal, and writes plain, professional comments. Use when the user says kick start, log this, or what have we tried."
+license: MIT
+compatibility: "Claude Code recommended, since it writes files and runs tests. Works in the Claude app with less checking."
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
+  author: NotRedFox
 ---
 
 # Kick Start

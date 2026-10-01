@@ -1,6 +1,6 @@
 # Claim Check
 
-Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that checks whether your README and docs are true. Docs drift: a number was right once, a command got renamed, an example stopped running, a link moved. Claim Check lists every claim your docs make, checks each one with real evidence, and fixes the docs where they're wrong.
 
@@ -30,7 +30,7 @@ When the docs are wrong, it changes the docs, not your code. When the docs look 
 
 ### Claude app (claude.ai, desktop or phone)
 
-1. Download [claim-check.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/claim-check.zip). Don't unzip it.
+1. Download [claim-check-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/claim-check-claude-app.zip). Don't unzip it.
 2. In Claude, open **Settings** and find **Skills**.
 3. Upload the zip file.
 
@@ -45,6 +45,9 @@ mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Cl
 Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
 
 To update later, do the same steps again.
+
+The two downloads hold the same skill. The Claude Code one also has Claude Code settings (an argument hint, and a setting so it only runs when you ask), which the Claude app doesn't accept.
+It only runs when you type `/claim-check`, so Claude never starts it on its own.
 
 ## Use
 

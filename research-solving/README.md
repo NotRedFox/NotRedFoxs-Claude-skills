@@ -1,6 +1,6 @@
 # Research Solving
 
-Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill for when you're building something and want to know what's already out there. It researches in three rings and ends with a short list of things to try, each with a cheap first test.
 
@@ -28,7 +28,7 @@ This run was made where every paper website was blocked, so the 4 papers it foun
 
 ### Claude app (claude.ai, desktop or phone)
 
-1. Download [research-solving.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/research-solving.zip). Don't unzip it.
+1. Download [research-solving-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/research-solving-claude-app.zip). Don't unzip it.
 2. In Claude, open **Settings** and find **Skills**.
 3. Upload the zip file.
 
@@ -43,6 +43,9 @@ mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Cl
 Then restart Claude Code. On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
 
 To update later, do the same steps again.
+
+The two downloads hold the same skill. The Claude Code one also has Claude Code settings (an argument hint, and a setting so it only runs when you ask), which the Claude app doesn't accept.
+It only runs when you type `/research-solving`, so Claude never starts it on its own.
 
 ## Use
 

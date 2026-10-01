@@ -1,8 +1,12 @@
 ---
 name: problem-solve
-description: For problems where the obvious route is blocked, like no API. Climbs from obvious to more creative approaches and tests each one for real instead of stopping at "impossible". Uses odd resources the user suggests, and writes a ChatGPT handoff prompt with everything tried so far. Use when the user says problem solve, there's no API, or I'm stuck.
+description: "For problems where the obvious route is blocked, like no API. Climbs from obvious to more creative approaches and tests each one for real instead of stopping at \"impossible\". Uses odd resources the user suggests, and writes a ChatGPT handoff prompt with everything tried so far. Use when the user says problem solve, there's no API, or I'm stuck."
+argument-hint: "<what you want to happen>"
+license: MIT
+compatibility: "Claude Code recommended, so approaches can be tested. The ChatGPT handoff is a prompt you paste yourself."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
+  author: NotRedFox
 ---
 
 # Problem Solve
