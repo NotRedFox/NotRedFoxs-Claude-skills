@@ -1,6 +1,6 @@
 # Tournament Forge
 
-Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that makes several genuinely different solutions to a hard problem fight 1v1 in a bracket. For code, matches are settled by **running tests**, not by opinion. The winner is merged with the best ideas from the losers into one audited answer.
 

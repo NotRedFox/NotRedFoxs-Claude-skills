@@ -2,7 +2,7 @@
 name: shadow-and-teach
 description: Beginner pair-programming mode. Maps any repo (small or huge) into areas you can drill into, replays what the agent did on a prompt, commit or past session as an interactive lesson, and explains each action as it works. Use when the user says teach me, explain this repo, show me what you did, replay this, shadow mode, or I'm a beginner.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Shadow and Teach
@@ -138,6 +138,8 @@ Area = {
 Trace = { name, hops: [{ area, where, what }] };
 ```
 
+Text fields are inserted into the page as HTML, so wrap code in `<code>` and write a literal `<`, `>` or `&` as `&lt;`, `&gt;` or `&amp;`. Mark glossary words with `[[term]]` in any prose, question or feedback field. Fields like `title`, `files` and `code` are escaped for you.
+
 Area ids must be unique across all levels.
 
 ### Step 5. Hand it over
@@ -173,7 +175,8 @@ If `assets/session-replay.html` ships with this skill, copy it to `learn/replays
 
 ```js
 const SESSION = {
-  title, prompt, source, repo, date, summary,
+  id, title,  // id is optional and keeps saved progress apart for replays with the same title
+ prompt, source, repo, date, summary,
   steps: [{ kind, risk, title, did, why, cmd, output, diff, files: [], lesson, yourself,
             predict: { q, opts: [], a, hints: [], why }, decision: { choice, alternative } }],
   changed: [{ file, why }], glossary: {}, quiz: [{ q, opts: [[text, isRight, feedback]] }],
@@ -181,7 +184,9 @@ const SESSION = {
 };
 ```
 
-If `learn/map.html` exists, link each step to its area and add the session to the map's log.
+The same HTML rules apply as for the map. Use `kind: "run"` for a command that failed and teach the error in `lesson`.
+
+If `learn/map.html` exists, name the area each step touched in its `why`, and add the session to the map's log with that `area`.
 
 ---
 

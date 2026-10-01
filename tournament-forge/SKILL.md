@@ -2,7 +2,7 @@
 name: tournament-forge
 description: Run a budget-aware bracket tournament of genuinely different solution approaches (blind builds, grounded attacks, bias-controlled judging, spec-first tests for software, graft-merge synthesis) for hard problems where one answer isn't enough.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Tournament Forge
@@ -40,7 +40,7 @@ Pick a tier (default **Standard**). If the user said nothing, choose from proble
 | Standard | 8 | QF, SF, Final | about 18 to 25 |
 | Deep | 16 | R16, QF, SF, Final | about 38 to 52 |
 
-Test mode adds 1 to 3 calls (test writer, test review, distinguishing inputs) and some tool runs; it often *saves* calls because failing builds are cut at the gate.
+Test mode adds one call for the test writer, at most one for test review, and one per match for distinguishing inputs (Quick: up to 5), plus some tool runs; it often *saves* calls because failing builds are cut at the gate.
 
 **Calls are the cost that matters.** In a measured run each subagent call cost about 57k tokens, mostly fixed overhead, regardless of prompt size. So: do Stage 0 (brief), Stage 1 (enumeration) and Stage 5 (forge) yourself as the orchestrator instead of spawning agents for them, prefer running code over calling a model, and skip any optional call that can't change the outcome.
 
@@ -49,7 +49,7 @@ Model routing (use the Agent tool's `model` parameter when available):
 - **Mid (sonnet)**: building contenders for hard or technical problems, test writer, semifinal critics and judges, final red-team.
 - **Cheap (haiku)**: gate and test review, early-round critics and judges, builds for simple or creative problems.
 
-If the Agent tool is not available, run the stages yourself in-context with strict separation: write the tests before any solution, write each contender fully before reading the next, and judge from the rubric only. Tell the user this is the lower-fidelity mode.
+If the Agent tool is not available, run the stages yourself in-context with strict separation: write the tests before any solution, write each contender fully before reading the next, and judge from the rubric only. Tell the user this is the lower-fidelity mode. In this mode, critics, judges and the position swap are not independent, so let executed evidence (tests, differential runs, timings) decide matches wherever possible, and say in the run stats which verdicts rest on judgement alone.
 
 ## Pipeline
 
@@ -93,7 +93,7 @@ Launch N subagents in ONE message. Each gets only the Brief, its one approach ca
   - **Test review (one cheap call):** any test that most builds fail is suspicious. Show the reviewer the test, its Brief line and the failure outputs (not the code). Verdict: `valid` (keep), `wrong` (fix or drop the test, then re-run), or `ambiguous` (downgrade to soft). This is the CodeT idea: tests and solutions check each other.
   - A build that fails a valid `HARD` test is out. Give it one debug pass first only if it failed on something trivial (import, typo, signature).
 - Always: fail anything that breaks a hard constraint, is internally contradictory, or fails a Stage-0 check.
-- **Differential check (test_mode, no model call):** if you can write a brute-force oracle or a slow-but-obviously-correct reference from the Brief, run every surviving build against it on a few thousand random inputs yourself. Also run builds against each other and flag any input where they disagree. A mismatch with the oracle on a HARD rule is a verified failure: the build is out. **Shrink** each failing input to the smallest reproduction (drop steps while it still fails) before recording it; unshrunk inputs often don't reproduce in isolation.
+- **Differential check (test_mode, no model call):** if you can write a brute-force oracle or a slow-but-obviously-correct reference from the Brief, run every surviving build against it on a few thousand random inputs yourself. Also run builds against each other and flag any input where they disagree. A mismatch with the oracle on a HARD rule is a verified failure: the build is out. If most builds disagree with the oracle on the same input, check the oracle against the Brief first, the same way suspicious tests are reviewed. **Shrink** each failing input to the smallest reproduction (drop steps while it still fails) before recording it; unshrunk inputs often don't reproduce in isolation.
 - **Convergence exit:** skip the bracket only if survivors are the same answer in substance. In test_mode that means identical results on the spec tests AND on the differential check. Identical spec-test rows alone are not enough; different mechanisms often pass the same tests.
 - Also measure what the rubric cares about that tests can't show (memory, speed at scale) with a quick script, and hand the numbers to the critic and judges as evidence.
 - **Seed** survivors by test pass rate, then quick rubric score, so the two strongest can't meet before the final. Missing slots become byes for the top seeds.

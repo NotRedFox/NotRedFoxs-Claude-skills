@@ -480,10 +480,10 @@ function tabWalk(a){
 function tabPractice(a){
   const p = a.predict, pz = a.parsons, ex = a.explain, qz = a.quiz || [];
   let h = `<div class="stack">`;
-  if(p) h += `<div class="card" id="pred"><div class="ch"><h3>Guess first</h3><span class="small">A wrong guess still helps</span></div><p>${p.q}</p><div class="opts">${p.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join("")}</div><div class="row"><button class="btn" id="hintbtn">Show a hint</button></div><div id="hints" class="stack" style="gap:6px"></div><div id="predfb"></div></div>`;
+  if(p) h += `<div class="card" id="pred"><div class="ch"><h3>Guess first</h3><span class="small">A wrong guess still helps</span></div><p>${terms(p.q)}</p><div class="opts">${p.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join("")}</div><div class="row"><button class="btn" id="hintbtn">Show a hint</button></div><div id="hints" class="stack" style="gap:6px"></div><div id="predfb"></div></div>`;
   if(pz) h += `<div class="card"><div class="ch"><h3>Put the lines in order</h3><span class="small">Tap a line to move it</span></div><p>${esc(pz.prompt)}</p><div class="pz2"><div class="pz" id="bank"></div><div class="pz" id="ans"></div></div><div class="row"><button class="btn go" id="pcheck">Check</button><button class="btn" id="preset">Start over</button></div><div id="pfb"></div></div>`;
-  if(ex) h += `<div class="card"><div class="ch"><h3>Explain it yourself</h3><span class="small">Then compare</span></div><p>${ex.q}</p><textarea id="exp-${a.id}" placeholder="In your own words"></textarea><div class="row"><button class="btn go" id="cmp">Compare with the agent's answer</button></div><div id="model"></div></div>`;
-  if(qz.length) h += `<div class="card"><div class="ch"><h3>Quick check</h3></div>${qz.map((q,qi)=>`<p>${q.q}</p><div class="opts" data-q="${qi}">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div><div id="qfb${qi}"></div>`).join("")}</div>`;
+  if(ex) h += `<div class="card"><div class="ch"><h3>Explain it yourself</h3><span class="small">Then compare</span></div><p>${terms(ex.q)}</p><textarea id="exp-${a.id}" placeholder="In your own words"></textarea><div class="row"><button class="btn go" id="cmp">Compare with the agent's answer</button></div><div id="model"></div></div>`;
+  if(qz.length) h += `<div class="card"><div class="ch"><h3>Quick check</h3></div>${qz.map((q,qi)=>`<p>${terms(q.q)}</p><div class="opts" data-q="${qi}">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div><div id="qfb${qi}"></div>`).join("")}</div>`;
   $("#tabbody").innerHTML = h + `</div>`;
   if(p){ let hn = 0, done = false;
     $("#hintbtn").onclick = () => { if(hn < p.hints.length){ $("#hints").insertAdjacentHTML("beforeend", `<div class="hint">Hint ${hn+1}: ${terms(p.hints[hn])}</div>`); hn++; } if(hn >= p.hints.length){ $("#hintbtn").disabled = true; $("#hintbtn").textContent = "That's all the hints"; } };
@@ -558,7 +558,7 @@ function renderWarm(){
   if(!prevVisit || !ids.length){ $("#warm").hidden = true; return; }
   const a = A(ids[Math.floor(Math.random()*ids.length)]), q = a.quiz[0];
   $("#warm").hidden = false;
-  $("#warm").innerHTML = `<div class="lbl" style="color:var(--marker-ink)">warm-up from last time: ${esc(a.title)}</div><p>${q.q}</p><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div><div id="wfb"></div>`;
+  $("#warm").innerHTML = `<div class="lbl" style="color:var(--marker-ink)">warm-up from last time: ${esc(a.title)}</div><p>${terms(q.q)}</p><div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o[0])}</button>`).join("")}</div><div id="wfb"></div>`;
   $("#warm").querySelectorAll(".opt").forEach(b => b.onclick = () => { const o = q.opts[+b.dataset.i]; b.classList.add(o[1]?"right":"wrong");
     $("#wfb").innerHTML = `<div class="fb ${o[1]?"ok":"no"}">${terms(o[2])}</div>`; if(o[1]){ S.quizOk[a.id] = Date.now(); save(); } });
 }
