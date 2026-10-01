@@ -12,6 +12,7 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 |---|---|---|
 | [tournament-forge](tournament-forge/) | 1.0.0 | Makes genuinely different solutions fight 1v1 in a bracket, settles code matches with spec-first tests, then merges the winner with the losers' best ideas. About 22 subagent calls for a standard run. [Real run included](tournament-forge/examples/rate-limiter-run/RUN.md). |
 | [shadow-and-teach](shadow-and-teach/) | 1.0.0 | Turns Claude into a pair-programming teacher for beginners. Maps any repo into areas you can click into and drill down through, replays what the agent did on a prompt, commit or PR as a step-by-step lesson, and explains each action as it works. Built on learning-science research. [Live examples](shadow-and-teach/README.md#examples), including [a map of Flask's own source code](https://notredfox.github.io/NotRedFoxs-Claude-skills/shadow-and-teach/examples/flask-internals-map.html). |
+| [kick-start](kick-start/) | 1.0.0 | Keeps a running log of the whole conversation: every approach Claude took, what worked, what didn't and why. Adds tests that check what you asked for instead of agreeing with the AI's code, and removes personal info. [Example included](kick-start/examples/slugify/kickstart/2026-10-01-url-slugs.md). |
 
 ## Install
 
@@ -21,6 +22,7 @@ Pick a skill, then follow the steps for where you use Claude.
 |---|---|
 | tournament-forge | [tournament-forge.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/tournament-forge.zip) |
 | shadow-and-teach | [shadow-and-teach.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip) |
+| kick-start | [kick-start.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/kick-start.zip) |
 
 ### Claude app (claude.ai, desktop or phone)
 
@@ -42,6 +44,12 @@ shadow-and-teach:
 
 ```
 mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/shadow-and-teach.zip -o /tmp/shadow-and-teach.zip && unzip -oq /tmp/shadow-and-teach.zip -d ~/.claude/skills && rm /tmp/shadow-and-teach.zip
+```
+
+kick-start:
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/kick-start.zip -o /tmp/kick-start.zip && unzip -oq /tmp/kick-start.zip -d ~/.claude/skills && rm /tmp/kick-start.zip
 ```
 
 On Windows, download the zip and unzip it into `.claude\skills` in your user folder.

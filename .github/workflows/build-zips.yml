@@ -6,6 +6,7 @@ on:
     paths:
       - "shadow-and-teach/**"
       - "tournament-forge/**"
+      - "kick-start/**"
       - "scripts/build-zips.sh"
   workflow_dispatch:
 
