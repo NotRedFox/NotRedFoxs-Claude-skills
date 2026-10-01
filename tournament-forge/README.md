@@ -21,7 +21,7 @@ Plenty of "make agents argue" skills exist, and this one borrows from several (s
 
 | Problem the research found | What Tournament Forge does |
 |---|---|
-| Most gains from debate come from simple voting. Arguing alone doesn't improve accuracy. | Cheap checks and tests run first. If most contenders agree, the bracket is skipped. |
+| Most gains from debate come from simple voting. Arguing alone doesn't improve accuracy. | Cheap checks and tests run first. If the survivors give the same answer in substance, the bracket is skipped. |
 | Copies of the same model give near-identical answers, even with personas. | Diversity comes from different **mechanisms**. A third of approaches must be long shots. |
 | LLM judges favour the first answer, longer answers, and their own writing. | Contenders are only "A" and "B". Close calls are re-judged with the order swapped. Length doesn't count. |
 | Agents cave to peers. | Nobody knows who wrote what. Builders never see each other's work. |
@@ -69,9 +69,9 @@ If code can't run in your environment, the tests are traced by hand and clearly 
 
 For comparison, arena-skill's `--quick` mode is 91 calls (~5.2M tokens) and its full run is 595 calls (~34M tokens).
 
-**How tokens are estimated:** measured, not guessed. In the real run each subagent call cost about 57k tokens, mostly fixed overhead that doesn't depend on prompt size. The same 57k per call is applied to every tool, so the comparison comes down to call counts. Your numbers will differ by environment, but the ratio holds.
+**How tokens are estimated:** from a measured cost per call. In the real run each subagent call cost about 57k tokens, mostly fixed overhead that doesn't depend on prompt size. The same 57k per call is applied to every tool, so the comparison comes down to call counts. Your numbers will differ by environment, but the ratio holds.
 
-Cheap models do screening and early judging. Strong models write the brief, list the approaches, judge the final and do the synthesis.
+Cheap models do screening and early judging. The orchestrator writes the brief, lists the approaches and does the synthesis, and strong models judge the final.
 
 ### What you get back
 

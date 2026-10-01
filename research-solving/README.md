@@ -1,8 +1,8 @@
 # Research Solving
 
-Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
 
-A Claude skill for when you're building something and want to know what's already out there. It researches in three rings and ends with a short list of things to try, each with a test you can run in under a day.
+A Claude skill for when you're building something and want to know what's already out there. It researches in three rings and ends with a short list of things to try, each with a cheap first test.
 
 | Ring | What it looks for |
 |---|---|
@@ -12,13 +12,13 @@ A Claude skill for when you're building something and want to know what's alread
 
 Every idea from another field is rated **High**, **Medium**, **Low** or **Hype**, with the reason. It marks ideas down when the only evidence is demos, vendor claims, tiny data or results nobody has repeated.
 
-It never cites a paper from memory. Models make up citations (one study found 18% of GPT-4's and 55% of GPT-3.5's were fabricated), so every source in the report is one it opened.
+It never cites a paper from memory. Models make up citations (one study found 18% of GPT-4's and 55% of GPT-3.5's were fabricated), so every source in the report is one it opened, or is marked `unverified`.
 
 ## Example
 
 [examples/procrastination-extension](examples/procrastination-extension/research/2026-10-01-procrastination-nudge-extension.md) is a real run on: "I want to build a browser extension that notices when I'm procrastinating and nudges me back to work. Runs locally, no cloud."
 
-- It opened 26 sources: 8 open-source projects with their code and history, browser API docs and package listings.
+- It opened 26 sources: 9 open-source projects (with code and commit history for the closest ones), browser API docs and package listings.
 - It ranked 8 things to try, from a simple activity logger (High) down to typing-rhythm signals (Low, and only with consent).
 - It ran the first test: a keyword scorer that got 38 of 40 sample tab titles right ([script](examples/procrastination-extension/research/first-test/keyword-baseline.mjs)). The report says the 40 titles were written by the same agent, so the score is an upper bound.
 
@@ -60,7 +60,7 @@ The report goes in `research/<date>-<topic>.md` in your project.
 
 ## Similar projects
 
-- [prior-art](https://github.com/kvadou/prior-art): surveys open-source projects before you build. Covers ring 1 only.
+- [prior-art](https://github.com/kvadou/prior-art): surveys open-source projects, APIs and some related research before you build. Doesn't look at other fields.
 - [GPT Researcher](https://github.com/assafelovic/gpt-researcher): writes cited research reports on any topic. Doesn't search code or rank things to try.
 - [claude-deep-research-skill](https://github.com/199-biotechnologies/claude-deep-research-skill): a multi-step research pipeline with source scoring, inside one field.
 - [STORM](https://github.com/stanford-oval/storm) ([paper](https://arxiv.org/abs/2402.14207)): asks questions from several perspectives before writing. The idea behind ring 3.

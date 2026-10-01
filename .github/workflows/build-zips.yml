@@ -9,6 +9,7 @@ on:
       - "kick-start/**"
       - "research-solving/**"
       - "problem-solve/**"
+      - "claim-check/**"
       - "scripts/build-zips.sh"
   workflow_dispatch:
 

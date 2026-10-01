@@ -13,7 +13,7 @@ A Claude skill that keeps your project's memory in files, so nothing depends on 
 
 It also:
 
-- **Checks that tests can fail.** Each test has to fail on the broken version before it counts. Bugs that aren't fixed yet stay as visible failing tests.
+- **Checks that tests can fail.** Each test is run against the broken version, and the log flags any test that was never seen to fail. Bugs that aren't fixed yet stay as visible failing tests.
 - **Writes comments for developers.** They explain why the code is the way it is. They never repeat your prompt or say "as requested".
 - **Removes personal info** (names, emails, keys, home folder paths) from everything it writes.
 - **Writes plainly.** It checks its writing for AI giveaways: em dashes, filler like "genuinely" or "robust", and stock phrases like "it's worth noting".

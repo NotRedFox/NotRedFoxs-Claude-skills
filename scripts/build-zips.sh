@@ -3,7 +3,7 @@ set -e
 cd "$(dirname "$0")/.."
 mkdir -p downloads
 tmp=$(mktemp -d)
-for s in kick-start problem-solve research-solving shadow-and-teach tournament-forge; do
+for s in claim-check kick-start problem-solve research-solving shadow-and-teach tournament-forge; do
   rm -f "downloads/$s.zip"
   find "$s" -type f ! -path "$s/examples/*" ! -name '*.png' ! -name 'README.md' | tar cf - -T - | (cd "$tmp" && tar xf -)
   find "$tmp/$s" -exec env TZ=UTC touch -t 202601010000 {} +

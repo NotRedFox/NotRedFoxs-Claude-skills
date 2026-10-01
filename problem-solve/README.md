@@ -17,7 +17,7 @@ How it works:
 - **"Impossible" isn't an answer.** It treats "it's never been done" and "there's no API" as constraints to get around.
 - **It asks what you have.** An old phone, a Raspberry Pi, a notification email, a browser that's always open. Your odd resources often turn out to be the answer, so they go on the ladder.
 - **Nothing counts until it's tested.** Each approach gets the smallest test that proves or kills it, and the real result is logged. Tests that need your hardware are written out for you to run.
-- **It writes a ChatGPT handoff.** You get a prompt to paste into ChatGPT with everything tried so far and what happened, so a different model can suggest new approaches without repeating old ones. Paste the answer back and Claude tests the promising ones. Research suggests ideas from one model narrow toward the same answers, and a second model widens them.
+- **It writes a ChatGPT handoff.** You get a prompt to paste into ChatGPT with everything tried so far and what happened, so a different model can suggest new approaches without repeating old ones. Paste the answer back and Claude tests the promising ones. Research suggests ideas from one model tend to narrow toward the same answers, so a second model is used to widen them.
 - **Creative, not reckless.** It won't break laws, get into accounts or systems you don't own, or get around security or paywalls. When it skips an approach for that reason, it logs why and keeps looking.
 - **The handoff is scrubbed.** It goes to a third party, so personal details are replaced with placeholders.
 
@@ -28,8 +28,9 @@ How it works:
 - It climbed all five levels and logged 12 approaches.
 - The best answer is the old phone sitting on the washer, sending a push notification once a hard spin is followed by 6 minutes of stillness. It combines two weak signals because "no movement for a while" alone gave early alerts during soak pauses.
 - The [test scripts](examples/washing-machine/problem-solve/tests/) re-run with the same results: 100 of 100 simulated cycles correct in each of two scenarios, against 30 to 34 early alerts for the simple version. The beep detector found every simulated beep at 0 dB (as loud as the room noise) and 16 of 20 at -5 dB, with no false alerts.
+- The test scripts need Python with `numpy` and `scipy`.
 - These tests ran on simulated sensor data, because there was no washing machine to test on. The log says so next to every result and lists the real on-device test as the next step.
-- [The ChatGPT handoff](examples/washing-machine/problem-solve/2026-10-01-washing-machine-done-chatgpt.md) lists all 10 approaches already tried, so ChatGPT starts from there.
+- [The ChatGPT handoff](examples/washing-machine/problem-solve/2026-10-01-washing-machine-done-chatgpt.md) lists everything already tried, so ChatGPT starts from there.
 
 ## Install
 
@@ -62,7 +63,7 @@ The log goes in `problem-solve/<date>-<topic>.md` and the ChatGPT prompt in `pro
 ## Similar projects
 
 - [obra/superpowers-skills, problem-solving set](https://github.com/obra/superpowers-skills/blob/main/skills/problem-solving/ABOUT.md): thinking techniques such as inversion and collision-zone thinking for when you're stuck. Problem Solve adds the ladder, real tests at each step and the second-model handoff.
-- Second-opinion plugins such as [consult](https://github.com/agent-sh/consult) and [the-council](https://github.com/DantesPeak85/the-council) send a question from Claude to another model by API. Problem Solve uses a prompt you paste, so it works without API keys.
+- Second-opinion plugins such as [consult](https://github.com/agent-sh/consult) and [the-council](https://github.com/DantesPeak85/the-council) send a question from Claude to another model through a command-line tool. Problem Solve uses a prompt you paste, so nothing else needs installing.
 
 ## Research
 

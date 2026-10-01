@@ -2,7 +2,7 @@
 name: research-solving
 description: Researches what a user is building in three rings. Similar open-source projects and code, papers from the user's own field, then ideas from far-off fields (quant research, biometrics, browser signals, local assistants), each rated for real signal versus hype. Ends with a ranked list of cheap experiments. Use when the user says research solving, what's out there for this, or find ideas for what I'm building.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Research Solving
@@ -79,7 +79,7 @@ Combine the three rings into a ranked list of 5 to 10 things to try. Rank by sig
 
 - What to try, in one sentence.
 - Why: the sources behind it.
-- **A first test that takes under a day**, with a clear pass or fail result.
+- **A first test that takes under a day of work to set up**, with a clear pass or fail result. If the result needs longer to collect (a week of normal use), say how long, and add a smaller check that gives a result the same day.
 - Rough cost: time, money, data needed.
 
 If the top idea can be tested cheaply here (a small script, a public dataset, an API call), run it and include the real result. Mark every result as `run` or `not run`.
