@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+Searches code with `rg` when it is installed, to use fewer tokens.
+
 ## 1.1.1
 
 Added Claude Code settings: licence and compatibility notes. The Claude app download keeps only the fields the app accepts.

@@ -1,6 +1,6 @@
 # Kick Start
 
-Version 1.1.1. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.1.2. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that keeps your project's memory in files, so nothing depends on what Claude remembers. Turn it on once and it keeps four things up to date as you work:
 

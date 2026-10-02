@@ -1,0 +1,49 @@
+2026-10-01T23:57:40Z Bash: ls -R . | head -30
+2026-10-01T23:57:43Z Write: ./sources/page-load-detection/BRIEF.md
+2026-10-01T23:57:45Z Bash: echo "$(date -u +%FT%TZ) wrote brief sources/page-load-detection/BRIEF.md; next: start 3 scouts" >> logs/notes.log
+2026-10-01T23:57:52Z WebFetch (paper-scout) FAILED: https://web.dev/articles/lcp
+2026-10-01T23:57:54Z WebFetch (paper-scout): https://github.com/WICG/soft-navigations
+2026-10-01T23:57:54Z WebFetch (paper-scout) FAILED: https://playwright.dev/docs/api/class-page
+2026-10-01T23:57:54Z Bash (code-scout): cd /tmp && mkdir -p pld && cd pld && git clone -q --depth 1 https://github.com/GoogleChrome/web-vitals && git clone -q --depth 1 https://github.com/puppeteer/puppeteer; ls web-vitals/src/onLCP.ts web-vitals/src/lib/softNavs.ts 2>&1; head -c 1500 web-vitals/LICENSE | head -3; cd web-vitals; git log -
+2026-10-01T23:57:56Z Bash (paper-scout): curl -sS "$HTTPS_PROXY/__agentproxy/status"; cat /root/.ccr/README.md | head -50
+2026-10-01T23:57:58Z WebFetch (paper-scout) FAILED: https://w3c.github.io/largest-contentful-paint/
+2026-10-01T23:58:00Z WebSearch (sideways-scout): ADC settling time detection sample within tolerance band for N consecutive samples
+2026-10-01T23:58:00Z WebSearch (code-scout): github MutationObserver wait for DOM to settle stable idle library javascript
+2026-10-01T23:58:01Z WebSearch (sideways-scout): Gelman-Rubin convergence diagnostic MCMC R-hat declare chains converged threshold 1.01
+2026-10-01T23:58:03Z WebSearch (paper-scout): Largest Contentful Paint web.dev LCP definition PerformanceObserver
+2026-10-01T23:58:03Z WebSearch (sideways-scout): switch contact debounce algorithm settling time stable sample counter Ganssle guide to debouncing
+2026-10-01T23:58:04Z Bash (code-scout): cd /tmp/pld && git clone -q --depth 1 https://github.com/testing-library/dom-testing-library; cd dom-testing-library; git log -1 --format=%cd; head -3 LICENSE; cat src/wait-for.js | sed -n 1,200p; cd ../web-vitals; sed -n 1,200p src/onLCP.ts; cd ../puppeteer; grep -n "idle\|Idle" packages/puppeteer-
+2026-10-01T23:58:05Z WebFetch (paper-scout) FAILED: https://developer.mozilla.org/en-US/docs/Web/API/LargestContentfulPaint
+2026-10-01T23:58:06Z WebFetch (sideways-scout) FAILED: https://www.ganssle.com/debouncing-pt2.htm
+2026-10-01T23:58:06Z Bash (code-scout): cd /tmp/pld/web-vitals; sed -n 200,280p src/onLCP.ts; grep -n "NETWORK_IDLE_TIME =" -r ../puppeteer/packages/puppeteer-core/src | head -2; cat src/lib/whenIdleOrHidden.ts | tail -20
+2026-10-01T23:58:06Z WebFetch (sideways-scout) FAILED: https://arxiv.org/pdf/1903.08008
+2026-10-01T23:58:07Z WebFetch (sideways-scout) FAILED: https://arxiv.org/pdf/2603.26147
+2026-10-01T23:58:08Z Bash (sideways-scout): curl -sS "$HTTPS_PROXY/__agentproxy/status" | head -50; cat /root/.ccr/README.md | head -60
+2026-10-01T23:58:11Z Bash (sideways-scout): for u in https://www.ganssle.com/debouncing-pt2.htm https://arxiv.org/abs/1903.08008 https://arxiv.org/abs/2603.26147; do echo $u; curl -sS -o /dev/null -w "%{http_code}\n" "$u" 2>&1 | tail -2; done
+2026-10-01T23:58:12Z Write (paper-scout): ./sources/page-load-detection/lcp-mdn-glossary.md
+2026-10-01T23:58:16Z Write (sideways-scout): ./sources/page-load-detection/sideways-ganssle-debounce.md
+2026-10-01T23:58:19Z Bash (code-scout): cd ./sources/page-load-detection cat > code-web-vitals.md <<'E' # web-vitals (GoogleChrome) Link: https://github.com/GoogleChrome/web-vitals Date read: 2026-10-01 (shallow clone, HEAD dated 2026-10-01
+2026-10-01T23:58:20Z Write (sideways-scout): ./sources/page-load-detection/sideways-rhat-convergence.md
+2026-10-01T23:58:21Z Bash: echo "$(date -u +%FT%TZ) paper-scout done: 1 source (lcp-mdn-glossary.md, unverified, from search summary); fetches to web.dev, w3c, playwright.dev, mdn, WICG blocked by proxy. waiting on code-scout and sideways-scout" >> logs/notes.log
+2026-10-01T23:58:24Z Write (sideways-scout): ./sources/page-load-detection/sideways-settling-time-band.md
+2026-10-01T23:58:27Z Bash (verifier): cd ./sources/page-load-detection && ls && for f in *.md; do echo "=== $f"; cat "$f"; done
+2026-10-01T23:58:31Z WebFetch (verifier): https://raw.githubusercontent.com/puppeteer/puppeteer/main/packages/puppeteer-core/src/common/util.ts
+2026-10-01T23:58:31Z WebFetch (verifier) FAILED: https://developer.mozilla.org/en-US/docs/Glossary/Largest_contentful_paint
+2026-10-01T23:58:32Z WebFetch (verifier) FAILED: https://www.ganssle.com/debouncing-pt2.htm
+2026-10-01T23:58:33Z WebFetch (verifier): https://raw.githubusercontent.com/testing-library/dom-testing-library/main/src/wait-for.js
+2026-10-01T23:58:33Z WebFetch (verifier) FAILED: https://arxiv.org/abs/1903.08008
+2026-10-01T23:58:34Z WebFetch (verifier): https://raw.githubusercontent.com/GoogleChrome/web-vitals/main/src/onLCP.ts
+2026-10-01T23:58:38Z Bash (verifier) FAILED: curl -sS "$HTTPS_PROXY/__agentproxy/status" | head -30; for u in https://developer.mozilla.org/en-US/docs/Glossary/Largest_contentful_paint https://www.ganssle.com/debouncing-pt2.htm https://arxiv.org/abs/1903.08008; do curl -sS -o /dev/null -w "%{http_code} $u\n" --cacert /root/.ccr/ca-bundle.crt $
+2026-10-01T23:58:40Z WebFetch (verifier): https://raw.githubusercontent.com/puppeteer/puppeteer/main/packages/puppeteer-core/src/cdp/LifecycleWatcher.ts
+2026-10-01T23:58:44Z WebFetch (verifier): https://raw.githubusercontent.com/puppeteer/puppeteer/main/packages/puppeteer-core/src/api/Page.ts
+2026-10-01T23:58:47Z WebFetch (verifier): https://github.com/GoogleChrome/web-vitals/tree/main/src/lib
+2026-10-01T23:58:48Z Bash (verifier): gh api repos/GoogleChrome/web-vitals/contents/src/lib --jq '.[].name' 2>&1 | head -30
+2026-10-01T23:58:52Z WebFetch (verifier): https://raw.githubusercontent.com/GoogleChrome/web-vitals/main/src/lib/observe.ts
+2026-10-01T23:58:52Z WebFetch (verifier): https://raw.githubusercontent.com/GoogleChrome/web-vitals/main/src/lib/whenIdleOrHidden.ts
+2026-10-01T23:58:53Z WebFetch (verifier): https://raw.githubusercontent.com/GoogleChrome/web-vitals/main/src/lib/softNavs.ts
+2026-10-01T23:59:01Z Bash (verifier): cd ./sources/page-load-detection && sed -i 's|^- Core logic (Page.ts ~2055): .*|- Core logic (Page.ts): `#inflight$` stream -> `inflight > concurrency` (boolean) -> `distinctUntilChanged` -> `switchMa
+2026-10-01T23:59:15Z WebFetch (verifier) FAILED: https://arxiv.org/pdf/2603.26147
+2026-10-01T23:59:16Z Bash (verifier) FAILED: curl -sS -m 20 "$HTTPS_PROXY/__agentproxy/status" | head -c 800; echo; curl -sS -m 20 -o /dev/null -w "%{http_code}\n" https://arxiv.org/abs/2603.26147
+2026-10-01T23:59:19Z Bash (verifier): printf '\nVerified: could not open (arxiv.org blocked by egress proxy, CONNECT 403 organization policy, on 2026-10-01; excerpts remain unconfirmed, do not cite)\n' >> ./sources/page-load-detection/sid
+2026-10-01T23:59:34Z Write: ./reports/page-load-detection.md
+2026-10-01T23:59:36Z Bash: echo "$(date -u +%FT%TZ) verifier done: 3 usable (waitFor yes, puppeteer corrected, web-vitals corrected), 4 could not open (proxy 403). wrote reports/page-load-detection.md" >> logs/notes.log && grep -L '^Verified:' sources/page-load-detection/*.md

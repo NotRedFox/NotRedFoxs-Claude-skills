@@ -1,6 +1,6 @@
 # Claim Check
 
-Version 1.0.2. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.3. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that checks whether your README and docs are true. Docs drift: a number was right once, a command got renamed, an example stopped running, a link moved. Claim Check lists every claim your docs make, checks each one with real evidence, and fixes the docs where they're wrong.
 

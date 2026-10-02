@@ -1,6 +1,6 @@
 # NotRedFox's Claude Skills
 
-Skills for Claude (Claude Code and the Claude app).
+Skills for Claude (Claude Code and the Claude app). Every skill was tested on real tasks, and each one's example is real output from those runs. [See them all on the website](https://notredfox.github.io/NotRedFoxs-Claude-skills/).
 
 ## Why these exist
 
@@ -10,13 +10,29 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 
 | Skill | Version | What it does |
 |---|---|---|
-| [tournament-forge](tournament-forge/) | 1.0.3 | Makes solutions that work in different ways fight 1v1 in a bracket, settles code matches with spec-first tests, then merges the winner with the losers' best ideas. About 22 subagent calls for a standard run. [Real run included](tournament-forge/examples/rate-limiter-run/RUN.md). |
-| [shadow-and-teach](shadow-and-teach/) | 1.0.3 | Turns Claude into a pair-programming teacher for beginners. Maps any repo into areas you can click into and drill down through, replays what the agent did on a prompt, commit or PR as a step-by-step lesson, and explains each action as it works. Built on learning-science research. [Live examples](shadow-and-teach/README.md#examples), including [a map of Flask's own source code](https://notredfox.github.io/NotRedFoxs-Claude-skills/shadow-and-teach/examples/flask-internals-map.html). |
-| [kick-start](kick-start/) | 1.1.1 | Keeps your project's memory in files as you work: a log of every approach and whether it worked, a bug log Claude rereads so it doesn't repeat mistakes, and an always-current Architecture section in your README. Adds tests that check what you asked for, writes professional comments and removes personal info. [Example included](kick-start/examples/invoice/). |
+| [tournament-forge](tournament-forge/) | 1.0.4 | Makes solutions that work in different ways fight 1v1 in a bracket, settles code matches with spec-first tests, then merges the winner with the losers' best ideas. About 10 subagent calls on the default quick tier. [Real run included](tournament-forge/examples/rate-limiter-run/RUN.md). |
+| [shadow-and-teach](shadow-and-teach/) | 1.0.4 | Turns Claude into a pair-programming teacher for beginners. Maps any repo into areas you can click into and drill down through, replays what the agent did on a prompt, commit or PR as a step-by-step lesson, and explains each action as it works. Built on learning-science research. [Live examples](shadow-and-teach/README.md#examples), including [a map of Flask's own source code](https://notredfox.github.io/NotRedFoxs-Claude-skills/shadow-and-teach/examples/flask-internals-map.html). |
+| [kick-start](kick-start/) | 1.1.2 | Keeps your project's memory in files as you work: a log of every approach and whether it worked, a bug log Claude rereads so it doesn't repeat mistakes, and an always-current Architecture section in your README. Adds tests that check what you asked for, writes professional comments and removes personal info. [Example included](kick-start/examples/invoice/). |
 | [research-solving](research-solving/) | 1.1.0 | Researches what you're building with three researchers working in parallel: open-source code to borrow from, papers from your field, and ideas from far-off fields like quant research, biometrics and browser signals. Rates each idea for real signal versus hype and ends with cheap first tests. [Example included](research-solving/examples/procrastination-extension-team/research/2026-10-01-procrastination-nudge-extension.md). |
 | [problem-solve](problem-solve/) | 1.0.1 | For problems with no obvious route, like no API. Climbs from obvious to more creative approaches, tests each one for real instead of stopping at "impossible", uses odd resources you suggest, and writes a ChatGPT prompt with everything tried so far. [Example included](problem-solve/examples/washing-machine/problem-solve/2026-10-01-washing-machine-done.md). |
-| [claim-check](claim-check/) | 1.0.2 | Checks whether your README and docs are true. Lists every claim (numbers, commands, behaviour, links, comparisons), checks each by running or reading the code, and fixes the docs where they're wrong. It found 11 false or partly true claims in this repo's own READMEs. [Examples included](claim-check/). |
-| [auditor](auditor/) | 1.0.2 | Audits one part of your project at a time, then the whole thing together. Gives a time estimate and asks every question up front, tests your tests, simulates real users, load and long runs, and looks for memory leaks. Found all 7 planted problems in a test app. [Example included](auditor/examples/notesapp/ANSWER-KEY.md). |
+| [claim-check](claim-check/) | 1.0.3 | Checks whether your README and docs are true. Lists every claim (numbers, commands, behaviour, links, comparisons), checks each by running or reading the code, and fixes the docs where they're wrong. It found 11 false or partly true claims in this repo's own READMEs. [Examples included](claim-check/). |
+| [auditor](auditor/) | 1.0.3 | Audits one part of your project at a time, then the whole thing together. Gives a time estimate and asks every question up front, tests your tests, simulates real users, load and long runs, and looks for memory leaks. Found all 7 planted problems in a test app. [Example included](auditor/examples/notesapp/ANSWER-KEY.md). |
+
+## How they fit together
+
+| When | Use |
+|---|---|
+| Before you build | [grill-me](https://github.com/mattpocock/skills) (not mine) to pressure-test the plan, then `/research-solving` to see what already exists |
+| While you build | kick-start, to keep the log, the bug list and the architecture up to date |
+| When you're stuck | problem-solve for blocked routes, `/tournament-forge` when several approaches are worth comparing |
+| Before you ship | `/auditor` on each part and then a final audit, `/claim-check` on the docs |
+| Learning a codebase | shadow-and-teach |
+
+These are general methods that work on any project, so they're longer than a skill written for one job. If you do the same task again and again in one project (adding an API route, deploying, writing a migration), a small skill written for that task will use far fewer tokens. Use both: these for the methods, small ones for your repeated jobs.
+
+## Also in this repo
+
+[research-workspace](research-workspace/): a ready-made Claude Code project folder for research, with four specialised agents and hooks that log every step, keep every check script, and won't let Claude finish without a written report. An alternative to research-solving if you'd rather keep research in its own folder.
 
 ## Install
 

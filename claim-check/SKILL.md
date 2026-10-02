@@ -6,7 +6,7 @@ disable-model-invocation: true
 license: MIT
 compatibility: "Claude Code recommended, since it runs commands and edits your docs. Only runs when you type /claim-check."
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
   author: NotRedFox
 ---
 
@@ -15,6 +15,8 @@ metadata:
 Docs drift. A number was true once, a command was renamed, an example stopped running, a link moved. Find every claim the docs make, check each one with evidence, and fix the docs where they are wrong.
 
 Output: `claim-check/<YYYY-MM-DD>.md` (the ledger), plus fixes to the docs.
+
+**Searching code:** use `rg` (ripgrep) when it's installed. It skips `.git`, `node_modules` and other ignored files, and returns only the matching lines, so it uses far fewer tokens than `cat`, `find` or `grep -r`. Read only the part of a file you need. Fall back to `grep -rn` if `rg` isn't there.
 
 ## Step 1. Decide the scope
 

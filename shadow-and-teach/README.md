@@ -1,6 +1,6 @@
 # Shadow and Teach
 
-Version 1.0.3. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.4. See [CHANGELOG.md](CHANGELOG.md).
 
 An Agent Skill (`SKILL.md`) that makes an AI coding agent teach you while it works, instead of changing your code in silence.
 

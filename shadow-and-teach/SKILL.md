@@ -5,7 +5,7 @@ argument-hint: "[map|replay|shadow] [area or commit]"
 license: MIT
 compatibility: "Claude Code or the Claude app. Writes HTML pages to learn/ in your project."
 metadata:
-  version: "1.0.3"
+  version: "1.0.4"
   author: NotRedFox
 ---
 
@@ -24,6 +24,8 @@ Three modes. Use whichever fits, or combine them.
 Shadow and Replay work together: when you finish a task in Shadow mode, offer to turn it into a replay page ("Want this as a replay you can step through?").
 
 ---
+
+**Searching code:** use `rg` (ripgrep) when it's installed. It skips `.git`, `node_modules` and other ignored files, and returns only the matching lines, so it uses far fewer tokens than `cat`, `find` or `grep -r`. Read only the part of a file you need. Fall back to `grep -rn` if `rg` isn't there.
 
 ## Part 1. How you sound
 

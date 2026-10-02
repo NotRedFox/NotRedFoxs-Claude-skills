@@ -6,7 +6,7 @@ disable-model-invocation: true
 license: MIT
 compatibility: "Works best in Claude Code with subagents. A run uses about 10 to 45 subagent calls, so it only runs when you type /tournament-forge."
 metadata:
-  version: "1.0.3"
+  version: "1.0.4"
   author: NotRedFox
 ---
 
@@ -37,7 +37,7 @@ Use for hard, open problems with several credible approaches: architecture and s
 
 ## Budget tiers
 
-Pick a tier (default **Standard**). If the user said nothing, choose from problem difficulty and say which you picked.
+Pick a tier (default **Quick**, the cheapest). Use Standard or Deep only when the user asks for it, or when the problem is hard enough that Quick would miss good approaches; then say which tier you picked and roughly how many calls it will use before starting.
 
 | Tier | Contenders | Rounds | Approx. subagent calls |
 |---|---|---|---|

@@ -4,7 +4,7 @@ description: "Keeps a project's memory up to date as you work. Logs every approa
 license: MIT
 compatibility: "Claude Code recommended, since it writes files and runs tests. Works in the Claude app with less checking."
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
   author: NotRedFox
 ---
 
@@ -20,6 +20,8 @@ It maintains four things:
 | `BUGS.md` | Every bug found and fixed, with the lesson | Permanent, grows over time |
 | `README.md`, Architecture section | How the project is built, as it is now | Permanent, kept current |
 | Tests | The goal, so fixed bugs stay fixed | Permanent |
+
+**Searching code:** use `rg` (ripgrep) when it's installed. It skips `.git`, `node_modules` and other ignored files, and returns only the matching lines, so it uses far fewer tokens than `cat`, `find` or `grep -r`. Read only the part of a file you need. Fall back to `grep -rn` if `rg` isn't there.
 
 ## When to run
 

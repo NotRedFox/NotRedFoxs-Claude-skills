@@ -1,6 +1,6 @@
 # Tournament Forge
 
-Version 1.0.3. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.4. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude skill that makes several solutions that work in different ways to a hard problem fight 1v1 in a bracket. For code, matches are settled by **running tests**, not by opinion. The winner is merged with the best ideas from the losers into one audited answer.
 
@@ -63,9 +63,11 @@ If code can't run in your environment, the tests are traced by hand and clearly 
 
 | Tier | Contenders | Subagent calls | Estimated tokens |
 |---|---|---|---|
-| Quick | 4 | ~10 | ~0.55M (measured: 521k) |
-| Standard (default) | 8 | ~22 | ~1.3M |
+| Quick (default) | 4 | ~10 | ~0.55M (measured: 521k) |
+| Standard | 8 | ~22 | ~1.3M |
 | Deep | 16 | ~45 | ~2.6M |
+
+Quick is the default because the tournament is token-heavy. Ask for `standard` or `deep` (for example `/tournament-forge standard <problem>`) when a problem is worth the extra calls. It only runs when you type `/tournament-forge`.
 
 For comparison, arena-skill's `--quick` mode is 91 calls (~5.2M tokens) and its full run is 595 calls (~34M tokens).
 

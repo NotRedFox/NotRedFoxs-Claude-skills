@@ -6,7 +6,7 @@ disable-model-invocation: true
 license: MIT
 compatibility: "Built for Claude Code. It runs tests, servers and load tests, and takes a while, so it only runs when you type /auditor."
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
   author: NotRedFox
 ---
 
@@ -24,6 +24,8 @@ Two modes:
 A branch is one part of the architecture: a folder, a service, a module and what it depends on, or a user-facing feature.
 
 The auditor reports. It adds tests, but does not change the project's code unless the user says yes to a specific fix.
+
+**Searching code:** use `rg` (ripgrep) when it's installed. It skips `.git`, `node_modules` and other ignored files, and returns only the matching lines, so it uses far fewer tokens than `cat`, `find` or `grep -r`. Read only the part of a file you need. Fall back to `grep -rn` if `rg` isn't there.
 
 ## Step 1. Estimate the time and say it first
 

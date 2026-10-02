@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+Searches code with `rg` when it is installed, to use fewer tokens.
+
 ## 1.0.2
 
 Description no longer says when to use it, since it only runs when you type /auditor.
