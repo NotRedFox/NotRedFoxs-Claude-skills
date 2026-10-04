@@ -11,6 +11,7 @@ on:
       - "problem-solve/**"
       - "claim-check/**"
       - "auditor/**"
+      - "let-me-sleep/**"
       - "research-workspace/**"
       - "scripts/build-zips.sh"
   workflow_dispatch:

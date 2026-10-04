@@ -1,0 +1,1 @@
+{ "name": "token-meter", "version": "0.1.0", "description": "Shows live tokens per second, per minute and per hour in the status line", "author": { "name": "NotRedFox" } }

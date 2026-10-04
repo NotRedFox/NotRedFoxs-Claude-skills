@@ -1,0 +1,12 @@
+{
+  "name": "notredfox",
+  "description": "NotRedFox's Claude Code mods",
+  "owner": { "name": "NotRedFox" },
+  "plugins": [
+    {
+      "name": "token-meter",
+      "source": "./mods/token-meter",
+      "description": "Live tokens per second, per minute and per hour in the status line"
+    }
+  ]
+}
