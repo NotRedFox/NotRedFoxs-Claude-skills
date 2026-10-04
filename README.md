@@ -17,7 +17,7 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 | [problem-solve](problem-solve/) | 1.0.1 | For problems with no obvious route, like no API. Climbs from obvious to more creative approaches, tests each one for real instead of stopping at "impossible", uses odd resources you suggest, and writes a ChatGPT prompt with everything tried so far. [Example included](problem-solve/examples/washing-machine/problem-solve/2026-10-01-washing-machine-done.md). |
 | [claim-check](claim-check/) | 1.0.3 | Checks whether your README and docs are true. Lists every claim (numbers, commands, behaviour, links, comparisons), checks each by running or reading the code, and fixes the docs where they're wrong. It found 11 false or partly true claims in this repo's own READMEs. [Examples included](claim-check/). |
 | [auditor](auditor/) | 1.0.3 | Audits one part of your project at a time, then the whole thing together. Gives a time estimate and asks every question up front, tests your tests, simulates real users, load and long runs, and looks for memory leaks. Found all 7 planted problems in a test app. [Example included](auditor/examples/notesapp/ANSWER-KEY.md). |
-| [let-me-sleep](let-me-sleep/) | 1.0.0 | For long tasks you want to walk away from. Before starting, it tells you how long the task will take and every permission prompt it will need, gets them approved at once, then works without stopping to ask. Missed 0 prompts in 6 test runs. [Test results](let-me-sleep/README.md#how-accurate-is-it). |
+| [let-me-sleep](let-me-sleep/) | 1.0.1 | For long tasks you want to walk away from. Before starting, it tells you how long the task will take and every permission prompt it will need, gets them approved at once, then works without stopping to ask. Missed 0 prompts in 20 test runs. [Test results](let-me-sleep/README.md#how-accurate-is-it). |
 
 ## How they fit together
 
@@ -42,6 +42,8 @@ claude plugin install token-meter@notredfox
 ```
 
 Mods need Claude Code v2.1.287 or later. [More about it](mods/token-meter/).
+
+[repo-brief](repo-brief/): two small scripts. One writes a short map of your repo with no code bodies, and one asks Gemini's free API about it, so you can check on a project from your phone without spending Claude tokens or sending your code. Read its privacy notes first.
 
 [research-workspace](research-workspace/): a ready-made Claude Code project folder for research, with four specialised agents and hooks that log every step, keep every check script, and won't let Claude finish without a written report. An alternative to research-solving if you'd rather keep research in its own folder.
 

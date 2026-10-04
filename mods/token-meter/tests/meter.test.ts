@@ -49,10 +49,52 @@ test('shows a live estimate marked ~ while a reply streams', SLOW, async ($, on)
   await clock.advance(800)
   await drain(stream)            // pieces 2 to 16 at 800 ms; the meter updates every 8 pieces
 
-  // At piece 8: 320 characters is about 80 tokens over 0.8 seconds.
-  expect(statuses).toContain('~100 tok/s | 0 tok/min | 0 tok/hr')
+  // At piece 8: 320 characters is about 107 tokens over 0.8 seconds.
+  expect(statuses).toContain('~133 tok/s | 0 tok/min | 0 tok/hr')
   // When the reply ends, the exact count replaces the estimate: 160 tokens over 0.8 seconds.
   expect(statuses.at(-1)).toBe('200 tok/s | 160 tok/min | 160 tok/hr')
+})
+
+test('learns the real tokens per character from finished replies', SLOW, async ($, on) => {
+  const clock = mock.clock(on)
+  const statuses = watchStatus(on)
+  on('turn.step', response(16, 320))
+
+  const first = $.turn.step(STEP)
+  await drain(first)             // 640 characters came to 320 tokens: 1 token per 2 characters
+
+  const second = $.turn.step({ ...STEP, index: 1 })
+  await second.next()
+  await clock.advance(800)
+  await drain(second)
+
+  // At piece 8: 320 characters is now about 160 tokens over 0.8 seconds.
+  expect(statuses).toContain('~200 tok/s | 320 tok/min | 320 tok/hr')
+})
+
+test('hidden thinking gives no live figure and is not learned from', SLOW, async ($, on) => {
+  const clock = mock.clock(on)
+  const statuses = watchStatus(on)
+  let replies = 0
+  on('turn.step', async function* ($s, e) {
+    replies += 1
+    if (replies === 1) {
+      for (let i = 0; i < 16; i++) yield { kind: 'thinking' as const, index: 0, text: '' }
+      yield { kind: 'stop' as const, stopReason: 'end_turn' as const, usage: usage(500) }
+      return { turnId: e.turnId, index: e.index, answer: '', toolUses: [], stopReason: 'end_turn' as const, usage: usage(500) }
+    }
+    return yield* response(16, 320)($s, e)
+  })
+
+  await drain($.turn.step(STEP))
+  expect(statuses.some(s => s?.startsWith('~'))).toBe(false)
+
+  const second = $.turn.step({ ...STEP, index: 1 })
+  await second.next()
+  await clock.advance(800)
+  await drain(second)
+  // Still 3 characters per token: 320 characters is about 107 tokens over 0.8 seconds.
+  expect(statuses).toContain('~133 tok/s | 500 tok/min | 500 tok/hr')
 })
 
 test('per-minute drops after a minute while per-hour keeps the total', SLOW, async ($, on) => {

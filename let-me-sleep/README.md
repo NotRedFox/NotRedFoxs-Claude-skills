@@ -1,6 +1,6 @@
 # Let Me Sleep
 
-Version 1.0.0. See [CHANGELOG.md](CHANGELOG.md).
+Version 1.0.1. See [CHANGELOG.md](CHANGELOG.md).
 
 A Claude Code skill for starting a long task and walking away. Before it does anything, it tells you:
 
@@ -13,14 +13,15 @@ It only runs when you type `/let-me-sleep <task>`.
 
 ## How accurate is it?
 
-Tested with real Claude Code sessions on two tasks: fixing failing tests, deleting a build folder, updating a changelog and committing; and adding a CLI flag with tests, setting up a virtual environment, installing packages, deleting a folder, updating the README and committing. Each forecast was run in Manual mode, the rules it proposed were approved exactly as written, then the task ran in Manual mode, where anything it failed to forecast would have stopped and asked.
+Tested with real Claude Code sessions on three projects: a Python calculator (fix failing tests, delete a build folder, update the changelog, commit), a Python CLI (add a flag with tests, set up a virtual environment, install packages, delete a folder, update the README, commit) and a Node.js converter (fix a test, add a function with a test, delete a logs folder, bump the version, commit). Each forecast was run in Manual mode, the rules it proposed were approved exactly as written, then the task ran in Manual mode, where anything it failed to forecast would have stopped and asked.
 
 | | Result |
 |---|---|
-| Permission prompts during planning | 0 in the final version (the first version caused 3, now fixed) |
-| Prompts the forecast missed | 0 in all 6 runs after the first fix. The only prompts were the two it says will always remain: writing the rules at the start, and removing them at the end. The very first version missed prompts for its own notes in `.claude/`, which is why they now live in `.let-me-sleep/`. |
-| Time estimate, first run in a project | About 2 times too long (1 minute forecast against 27 seconds, 1.5 minutes against 40 seconds) |
-| Time estimate, with history from earlier runs | 30 seconds forecast for the task that took 27 seconds |
+| Permission prompts during planning | 0 in all 20 runs since the first fix (the first version caused 3) |
+| Prompts the forecast missed | 0 in all 20 runs. The only prompt during the work was the one it always warns about: removing the temporary rules at the end. |
+| Tasks done correctly | All of them: tests pass, folders deleted, commits made |
+| Time estimate, first run in a project | About 1.5 times too long (35 seconds forecast against 22 and 24 seconds real) |
+| Time estimate, second run, using history | 25 seconds forecast against 22 real, and 23 against 25 |
 
 It keeps a history of estimates and real times in `.let-me-sleep/history.md`, measured with the system clock, and scales later estimates by how far off earlier ones were. So it gets closer the more you use it in a project.
 

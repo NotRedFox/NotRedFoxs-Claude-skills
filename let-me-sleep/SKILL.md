@@ -6,7 +6,7 @@ disable-model-invocation: true
 license: MIT
 compatibility: "Claude Code. Writes temporary allow rules to .claude/settings.local.json and removes them at the end. Keeps its notes in .let-me-sleep/."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
   author: NotRedFox
 ---
 
@@ -28,12 +28,13 @@ Write the plan as numbered steps. For each step, list the exact actions it takes
 
 You work much faster than a person, so don't estimate in human time. Estimate from what you'll actually do:
 
-1. **Count your tool calls.** Measured on real runs, each read, edit, search or short command takes about 2 seconds, including thinking. A file you have to understand before changing it is 2 or 3 calls. A bug you have to diagnose is about 5. Writing a longer file (a page of docs, a test file) is about 10 seconds.
+1. **Count your tool calls.** Measured on real runs, each read, edit, search or short command takes about 1.5 seconds, including thinking. A file you have to understand before changing it is 2 or 3 calls. A bug you have to diagnose is about 5. Writing a longer file (a page of docs, a test file) is about 5 seconds. Count every call, including the `date +%s` commands and each write to `.let-me-sleep/`.
 2. **Add the commands that take real time.** Tests, builds, installs and downloads take as long as they take. If the project records how long they take (a CI log, a README, an earlier run), use that. Otherwise estimate from their size, and plan to re-time them on the first approved run.
-3. **Don't pad it.** Give your best estimate, not a safe one. The history in the next step corrects it over time.
-4. **Scale by history.** If `.let-me-sleep/history.md` exists, it has earlier estimates and real times for this project. Multiply by the average ratio of real to estimated time.
+3. **Don't pad it.** No slack, buffer or retry time, and no rounding up. Give your best estimate, not a safe one. The history in the next step corrects it over time.
+4. **Scale by history.** If `.let-me-sleep/history.md` exists, it has earlier work estimates and real work times for this project. Work out the ratio of real to estimated for each line that has both. With one or two lines, move halfway toward their average ratio. With three or more, use the average. Never go below 1 second per tool call.
+5. **Add the wrap-up.** The final report, the history line and the settings restore take about 10 seconds after the clock stops. Add them after scaling, since history doesn't time them.
 
-Give one number and a finish time: "About 4 minutes, done around 23:10." Add a short breakdown by step. After the first approved run of a slow command, write the real time to `.let-me-sleep/run.md`, and if the estimate is now off by more than half, say so in the final report.
+Write the work estimate (before the wrap-up) in seconds in `run.md` in Step 4, since that's what history compares against. Give the user one number and a finish time: "About 4 minutes, done around 23:10." Add a short breakdown by step. After the first approved run of a slow command, write the real time to `.let-me-sleep/run.md`, and if the estimate is now off by more than half, say so in the final report.
 
 ## Step 3. Forecast every permission prompt
 
@@ -73,7 +74,7 @@ Offer to turn the list into allow rules for this task only:
 - For file edits, either ask the user to switch to accept-edits mode (Shift+Tab), or add `Edit(./src/**)`-style rules for the folders you'll change.
 - Add `Edit(./.let-me-sleep/**)` so your log and history files don't ask.
 
-Show the exact rules. When the user says yes, write the time estimate and the forecast prompt count to `.let-me-sleep/run.md` first, so the history can compare them later even if the run continues in a new session. Then save a copy of the current `.claude/settings.local.json` (or `{}` if there is none) to `.let-me-sleep/settings.before.json`, then write the rules into `.claude/settings.local.json` under `permissions.allow`. Writing to `.claude/` always asks, so this is the one prompt they answer now. Then tell them they can go.
+Show the exact rules. When the user says yes, write the work estimate in seconds and the forecast prompt count to `.let-me-sleep/run.md` first, so the history can compare them later even if the run continues in a new session. Then save a copy of the current `.claude/settings.local.json` (or `{}` if there is none) to `.let-me-sleep/settings.before.json`, then write the rules into `.claude/settings.local.json` under `permissions.allow`. Writing to `.claude/` always asks, so this is the one prompt they answer now. Then tell them they can go.
 
 Removing the rules at the end also writes to `.claude/`, so it asks too. Say so in the forecast: it's one last prompt after all the work is done, and they can answer it whenever they're back. Count it in the total.
 
@@ -88,7 +89,7 @@ If the user would rather not add rules, tell them which prompts will still appea
 
 ## Step 6. Clean up and report
 
-1. Run `date +%s` again and work out the real time from the start time in `run.md`. Add a line to `.let-me-sleep/history.md`: date, task, estimated seconds, real seconds, prompts forecast, any prompts that appeared anyway.
+1. Run `date +%s` again and work out the real time from the start time in `run.md`. Add a line to `.let-me-sleep/history.md`: date, task, work estimate in seconds, real seconds, prompts forecast, any prompts that appeared anyway.
 2. Tell the user, briefly:
    - What got done, step by step.
    - Estimated time against real time.

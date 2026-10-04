@@ -1,0 +1,26 @@
+name: Update BRIEF.md
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["BRIEF.md"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 20
+      - run: python3 .github/brief.py
+      - run: |
+          git add BRIEF.md
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update BRIEF.md"
+          git push

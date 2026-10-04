@@ -2,9 +2,11 @@ import type { EngineInterface, Register } from 'claude-code'
 
 // Output tokens are what "speed" means for a model, so the meter counts those.
 // While a reply is still streaming, the API hasn't reported its token count yet,
-// so the live figure is estimated from characters (about 4 per token) and marked
-// with "~". Once the reply ends, the exact count from the API replaces it.
-const CHARS_PER_TOKEN = 4
+// so the live figure is estimated from characters and marked with "~". It starts
+// at 3 characters per token (measured on Claude's replies) and learns the real
+// ratio from each finished reply. Hidden thinking costs tokens but streams no
+// characters, so those replies get no live figure and aren't learned from.
+const CHARS_PER_TOKEN = 3
 const MINUTE = 60_000
 const HOUR = 3_600_000
 // Shorter than this, a reply's rate is mostly noise (one or two chunks).
@@ -27,7 +29,12 @@ export function meterText(tps: number | undefined, isLive: boolean, perMinute: n
 type Meter = {
   samples: Sample[]
   lastTps: number | undefined
-  live: { first: number; chars: number } | undefined
+  live: { start: number; chars: number } | undefined
+  seen: { tokens: number; chars: number }
+}
+
+function tokensPerChar(m: Meter): number {
+  return m.seen.chars > 0 ? m.seen.tokens / m.seen.chars : 1 / CHARS_PER_TOKEN
 }
 
 async function show($: EngineInterface, m: Meter) {
@@ -41,15 +48,15 @@ async function show($: EngineInterface, m: Meter) {
   const perHour = m.samples.reduce((sum, s) => sum + s.tokens, 0)
   let tps = m.lastTps
   let isLive = false
-  if (m.live !== undefined && now - m.live.first >= MIN_STREAM_MS) {
-    tps = m.live.chars / CHARS_PER_TOKEN / ((now - m.live.first) / 1000)
+  if (m.live !== undefined && now - m.live.start >= MIN_STREAM_MS) {
+    tps = m.live.chars * tokensPerChar(m) / ((now - m.live.start) / 1000)
     isLive = true
   }
   $.ui.status(meterText(tps, isLive, perMinute, perHour))
 }
 
 export const register: Register = on => {
-  const meter: Meter = { samples: [], lastTps: undefined, live: undefined }
+  const meter: Meter = { samples: [], lastTps: undefined, live: undefined, seen: { tokens: 0, chars: 0 } }
 
   on('session.start', async ($, e, next) => {
     const started = await next(e)
@@ -59,25 +66,33 @@ export const register: Register = on => {
   })
 
   on('turn.step', async function* ($, e, next) {
+    // Timed from the request, not the first chunk: a reply can think for seconds
+    // and then arrive in one burst, which would make the speed look huge.
+    const start = await $.clock.now()
     const stream = next(e)
-    let first: number | undefined
     let chars = 0
+    let hidden = false
     let pieces = 0
     for await (const chunk of stream) {
       if (chunk.kind === 'text' || chunk.kind === 'thinking' || chunk.kind === 'input') {
-        first ??= await $.clock.now()
-        chars += chunk.kind === 'input' ? chunk.json.length : chunk.text.length
+        const length = chunk.kind === 'input' ? chunk.json.length : chunk.text.length
+        if (chunk.kind === 'thinking' && length === 0) hidden = true
+        chars += length
         pieces += 1
-        if (pieces % 8 === 0) {
-          meter.live = { first, chars }
+        if (pieces % 8 === 0 && !hidden) {
+          meter.live = { start, chars }
           await show($, meter)
         }
       } else if (chunk.kind === 'stop') {
         const end = await $.clock.now()
         if (chunk.usage) {
           meter.samples.push({ at: end, tokens: chunk.usage.output_tokens })
-          if (first !== undefined && end - first >= MIN_STREAM_MS) {
-            meter.lastTps = chunk.usage.output_tokens / ((end - first) / 1000)
+          if (chars > 0 && !hidden) {
+            meter.seen.tokens += chunk.usage.output_tokens
+            meter.seen.chars += chars
+          }
+          if (end - start >= MIN_STREAM_MS) {
+            meter.lastTps = chunk.usage.output_tokens / ((end - start) / 1000)
           }
         }
         meter.live = undefined
