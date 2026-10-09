@@ -12,6 +12,7 @@ on:
       - "claim-check/**"
       - "auditor/**"
       - "let-me-sleep/**"
+      - "version-bump/**"
       - "research-workspace/**"
       - "scripts/build-zips.sh"
   workflow_dispatch:

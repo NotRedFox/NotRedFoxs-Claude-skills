@@ -5,12 +5,14 @@ set -e
 cd "$(dirname "$0")/.."
 mkdir -p downloads
 tmp=$(mktemp -d)
-for s in auditor claim-check kick-start let-me-sleep problem-solve research-solving shadow-and-teach tournament-forge; do
+for s in auditor claim-check kick-start let-me-sleep problem-solve research-solving shadow-and-teach tournament-forge version-bump; do
   rm -rf "$tmp/$s"
   find "$s" -type f ! -path "$s/examples/*" ! -name '*.png' ! -name 'README.md' ! -path "*/__pycache__/*" | tar cf - -T - | (cd "$tmp" && tar xf -)
   find "$tmp/$s" -exec env TZ=UTC touch -t 202601010000 {} +
   rm -f "downloads/$s.zip" "downloads/$s-claude-app.zip"
   (cd "$tmp" && find "$s" -type f | LC_ALL=C sort | zip -qX - -@) > "downloads/$s.zip"
+  # version-bump edits files and installs a hook, which the Claude app can't do.
+  [ "$s" = version-bump ] && continue
   awk '
     NR == 1 && /^---$/ { infm = 1; print; next }
     infm && /^---$/ { infm = 0; print; next }

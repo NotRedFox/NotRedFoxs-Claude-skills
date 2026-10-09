@@ -18,6 +18,7 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 | [claim-check](claim-check/) | 1.0.3 | Checks whether your README and docs are true. Lists every claim (numbers, commands, behaviour, links, comparisons), checks each by running or reading the code, and fixes the docs where they're wrong. It found 11 false or partly true claims in this repo's own READMEs. [Examples included](claim-check/). |
 | [auditor](auditor/) | 1.0.3 | Audits one part of your project at a time, then the whole thing together. Gives a time estimate and asks every question up front, tests your tests, simulates real users, load and long runs, and looks for memory leaks. Found all 7 planted problems in a test app. [Example included](auditor/examples/notesapp/ANSWER-KEY.md). |
 | [let-me-sleep](let-me-sleep/) | 1.0.1 | For long tasks you want to walk away from. Before starting, it tells you how long the task will take and every permission prompt it will need, gets them approved at once, then works without stopping to ask. Missed 0 prompts in 20 test runs. [Test results](let-me-sleep/README.md#how-accurate-is-it). |
+| [version-bump](version-bump/) | 1.0.0 | Keeps a four-part version for your project (major, minor, patch, tweak), picks which number to raise from what changed and says why, and installs a hook that blocks any commit Claude makes without a bump. Picked the right level in 8 of 8 test commits. [Test results](version-bump/README.md#tested). |
 
 ## How they fit together
 
@@ -29,6 +30,7 @@ These are Claude skills I made because I wanted them and couldn't find ones that
 | Before you ship | `/auditor` on each part and then a final audit, `/claim-check` on the docs |
 | Learning a codebase | shadow-and-teach |
 | Leaving it to run | `/let-me-sleep` with the task |
+| Every commit | version-bump, after `/version-bump setup` once per project |
 
 These are general methods that work on any project, so they're longer than a skill written for one job. If you do the same task again and again in one project (adding an API route, deploying, writing a migration), a small skill written for that task will use far fewer tokens. Use both: these for the methods, small ones for your repeated jobs.
 
@@ -61,6 +63,7 @@ Pick a skill, then follow the steps for where you use Claude.
 | claim-check | [claim-check-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/claim-check-claude-app.zip) | [claim-check.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/claim-check.zip) |
 | auditor | [auditor-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/auditor-claude-app.zip) | [auditor.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/auditor.zip) |
 | let-me-sleep | [let-me-sleep-claude-app.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/let-me-sleep-claude-app.zip) | [let-me-sleep.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/let-me-sleep.zip) |
+| version-bump | Not available (it needs Claude Code) | [version-bump.zip](https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/version-bump.zip) |
 
 ### Claude app (claude.ai, desktop or phone)
 
@@ -118,6 +121,12 @@ let-me-sleep:
 
 ```
 mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/let-me-sleep.zip -o /tmp/let-me-sleep.zip && unzip -oq /tmp/let-me-sleep.zip -d ~/.claude/skills && rm /tmp/let-me-sleep.zip
+```
+
+version-bump:
+
+```
+mkdir -p ~/.claude/skills && curl -sL https://github.com/NotRedFox/NotRedFoxs-Claude-skills/raw/main/downloads/version-bump.zip -o /tmp/version-bump.zip && unzip -oq /tmp/version-bump.zip -d ~/.claude/skills && rm /tmp/version-bump.zip
 ```
 
 On Windows, download the zip and unzip it into `.claude\skills` in your user folder.
